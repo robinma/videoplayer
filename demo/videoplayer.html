@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title>videoPlayer demo1</title>
+    <link rel="stylesheet" href="../src/css/videoplayer.css">
+</head>
+<body>
+    <div class="mod-yivideo-warp">
+       <div class="yvp_container">
+            <div class="yvp_video">
+                <video width="100%" height="100%" _preload="none" autoplay="true" x-webkit-airplay="true" src="http://mediaelementjs.com/media/echo-hereweare.mp4"></video>
+            </div>
+            <div class="yvp_overlay_play">
+                <span class="yvp_button_play"></span>
+            </div>
+            <div class="yvp_controls">
+                <div class="yvp_button yvp_play_pause">
+                    <button type="button" title="播放/暂停">
+                        <span class="yvp_btn_val">play</span>
+                    </button>
+                </div>
+                <div class="yvp_button yvp_next">
+                    <button type="button" title="next">
+                        <span class="yvp_btn_val">next</span>
+                    </button>
+                </div>
+                <div class="yvp_button yvp_fullscreen">
+                    <button type="button" title="full_screen">
+                        <span class="yvp_btn_val">fullscreen</span>
+                    </button>
+                </div>
+                <div class="yvp_button yvp_muted">
+                    <button type="button" title="muted">
+                        <span class="yvp_btn_val">muted</span>
+                    </button>
+                </div>
+                <div class="yvp_prograss_wrap">
+                    <div class="yvp_prograss">
+                        <span class="yvp_time_panel yvp_time_panel_curr">02:12</span>
+                        <span class="yvp_time_panel yvp_time_panel_total">05:28</span>
+                        <span class="yvp_time_total">
+                            <span class="yvp_time_loaded" style='width:85%'></span>
+                            <span class="yvp_time_current" style='width:60%'>
+                                <span class="yvp_time_handle"></span>
+                            </span>
+                        </span>
+                        <span class="yvp_contplay">
+                            <span class="checkbox"></span>
+                            <span class="checkflag"></span>
+                            <b>连播</b>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+       </div>
+    </div>
+</body>
+</html>

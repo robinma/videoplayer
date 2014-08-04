@@ -1,0 +1,70 @@
+@charset "UTF-8";
+//-----------------------
+// setting css
+//-----------------------
+
+//开关设置
+//--------------------
+$lte7:    true !default;  //是否兼容ie6-7
+$filter:   true !default; //是否为ie6-8开启滤镜兼容，常用于渐变背景 
+$printStyleSwitch:  false !default;//是否开启打印样式
+
+//font 相关
+//----------------
+$baseFontSize:    16px !default;
+$baseLineHeight:  1.5 !default;
+$baseFontFamily:  "Helvetica Neue", Helvetica, Tahoma, sans-serif !default;
+$fontCn:  "SimSun"; //宋体
+$fontYaHei: "Microsoft Yahei"; //微软雅黑
+$fontHeiTi: "SimHei"; //黑体
+
+//元素上下间距
+//----------------
+$baseGap: 1.25em !default;
+
+//基本颜色
+//----------------
+$black:                 #000 !default;
+$grayDarker:            #333 !default;
+$grayDark:              #999 !default;
+$gray:                  #ccc !default;
+$grayLight:             #f5f5f5 !default;
+$white:                 #fff !default;
+
+$red:                   #cc3300 !default;
+$blue:                  #00A3CF !default;
+$blueDark:              #0064cd !default;
+$orange:                #F47837 !default;
+$green:                 #51B148 !default;
+$yellow:                #ffc40d !default;
+$pink:                  #c3325f !default;
+$purple:                #7a43b6 !default;
+
+$primary:               #0078e7 !default;
+
+//link
+//--------------------
+$linkColor:       #9fc55c !default;
+
+//scaffolding
+//--------------------
+$bodyBgColor:    $white !default;
+$textColor:      $grayDark !default;
+
+//placeholder
+//--------------------
+$placeholder:    true $gray !default;
+
+//radius
+//--------------------
+$baseRadius:    5px !default;
+$smallRadius:   3px !default;
+
+//z-index
+//--------------------
+$zindexDropdown:        1000 !default;
+$zindexFixedTopbar:     1010 !default;
+$zindexTooltip:         1020 !default;
+$zindexAlert:           1030 !default;
+$zindexModal:           1100 !default;
+
