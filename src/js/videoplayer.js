@@ -1,6 +1,6 @@
 /*!
  *vedioPlayer.js
- *HTML% <video> player
+ *HTML5 <video> player
  *
  *chreate a javascript Object that mimics html5 Media API
  *can play MP4,Ogg,WebM
