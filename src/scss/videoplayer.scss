@@ -21,6 +21,20 @@ video{
   }
 }
 }
+@include font-face('videoplayer','../font/videoplayer');
+.yvphicon{position: relative;top: 1px;display: inline-block;font-family: 'videoplayer';font-style: normal;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;color: #fff;}
+.yvphicon-play:before{content: "\0021";}
+.yvphicon-pause:before{content: "\0022";}
+.yvphicon-next:before{content: "\0023";}
+.yvphicon-square:before{content: "\0024";}
+.yvphicon-horn:before{content: "\0025";}
+.yvphicon-freverse:before{content: "\0026";}
+.yvphicon-fspead:before{content: "\0027";}
+.yvphicon-rightflag:before{content: "\0028";}
+.yvphicon-fullscreen:before{content: "\0029";}
+
+//image icon
+.yvp_icon{background: url('../images/videoplayericon.png') 0 0;background-size: pte(100,16) pte(100,16);}
 //warp style
 .mod-yivideo-warp{width: 853px; height: 480px;}
 
@@ -44,17 +58,21 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
 };
 .yvp_button{height:pxToEm(60,16);width: pxToEm(75,16);float: left;@extend %backgroundOpacity;
     button{display: block;width: 100%;height: 100%;margin: 0;padding: 0;border: 0 none; background: rgba(0,0,0,0);cursor: pointer;}
-    .yvp_btn_val{display: block;margin: auto;width: 27px;height: 28px;line-height: 100;overflow: hidden;background-size: contain;}
+    .yvp_btn_val{display: block;margin: auto;width:pte(27,16);height:pte(28,16);overflow: hidden;background-size: contain;}
 }
-.yvp_play_pause{
-    .yvp_btn_val{background: rgba(0,0,0,0) url(../images/play.svg) 0 0 no-repeat;}
+.yvp_button{
+    .yvphicon{display: block;width: 100%;height: 100%;font-size: 24px;text-align: center;
+      &:before{position: absolute;top: 0;left: 0;line-height: 1em;text-align: center;}
+    }
 }
-.yvp_next{margin-left: 1px;
-    .yvp_btn_val{background: rgba(0,0,0,0) url(../images/play.svg) 0 0 no-repeat;}
+.yvp_fullscreen{
+  .yvphicon{display: block;width: 100%;height: 100%;font-size: 29px;text-align: center;
+      &:before{position: absolute;top: 0;left: 0;line-height: 0.70em;text-align: center;}
+    }
 }
 
 .yvp_fullscreen,.yvp_muted{float: right;width: pxToEm(53,16);margin-left: 1px;}
-.yvp_prograss_wrap{height:pxToEm(60,16);margin-left:pxToEm(152,16);margin-right:pxToEm(108,16);overflow: hidden;padding-top: pxToEm(16,16);@extend %backgroundOpacity;}
+.yvp_prograss_wrap{height:pxToEm(60,16);margin-left:pxToEm(152,16);margin-right:pxToEm(108,16);overflow: hidden;padding-top: pxToEm(18,16);@extend %backgroundOpacity;}
 .yvp_prograss{height:pxToEm(28,16);padding: 0 pxToEm(127,16) 0 pxToEm(61,16);position: relative;
     .yvp_time_panel{position: absolute;left: 0;top: 50%;margin-top: -13px;font-size: pxToEm(14,16);width:pxToEm(60,16);text-align: center; color: #00bcd4;font-family: Arial;}
     .yvp_time_panel_total{left: auto;right:pxToEm(70,16);}
@@ -63,9 +81,12 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
     .yvp_time_loaded,.yvp_time_current{position: absolute;left: 0;top: 0;z-index: 2;display: block;max-width: 100%;height: 100%;box-sizing:border-box;background-color: #00e2ff;}
     .yvp_time_loaded{z-index: 1;background-color:#c1e7ec;border:0 none;}
     .yvp_time_handle{position: absolute;display: block;z-index: 3;top: -5px;right: -8px;width: 16px; height: 16px;font-size: 0;border-radius: 16px;border:2px solid #0be2fe;background: #fff;@include gradient-angle(135deg, #dedede , #fdfdfd);box-shadow: 0 0 4px rgba(0,0,0,.3);}
-    .yvp_contplay{position: absolute;right: 0;top: 0;padding-left:pxToEm(26,16);padding-right: pxToEm(5,16);line-height: (21,16);top: pxToEm(2,16);
-      .checkbox{position: absolute;width:pxToEm(21,16);height: pxToEm(21,16); left: 0;top: 0;background: #ccc;}
-      .checkflag{width: pxToEm(13,16);height: pxToEm(13,16);position: absolute;top:4px;left: 4px;background: #fff; }
+    .yvp_contplay{position: absolute;right: 0;top: 0;padding-left:pxToEm(26,16);padding-right: pxToEm(5,16);line-height: pte(21,16);top: pxToEm(2,16);
+      .checkbox{position: absolute;width:pxToEm(21,16);height: pxToEm(21,16); left: 0;top: 0;}
+      .checkflag{width: pxToEm(13,16);height: pxToEm(13,16);position: absolute;top:4px;left: 4px;background-position: pte(-28,16) pte(-4,16);display: none;}
       b{font-weight: normal;font-size: 12px;color: #fbfbfb;}
+    }
+    .yvp_contplay_check{
+      .checkflag{display: block;}
     }
 }

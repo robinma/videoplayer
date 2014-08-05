@@ -8,7 +8,9 @@
  *License:MIT
  *
  */
- (function (argument) {
+ (function (win,$,factory) {
      // body...
 
- })();
+ })(window,$,function(){
+    
+ });

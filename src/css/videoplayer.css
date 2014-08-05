@@ -14,6 +14,54 @@
     *display: inline;
     *zoom: 1; }
 
+@font-face {
+  font-family: "videoplayer";
+  font-weight: normal;
+  font-style: normal;
+  src: url("../font/videoplayer.eot");
+  src: url("../font/videoplayer.eot?#iefix") format("eot"), url("../font/videoplayer.svg#videoplayer") format("svg"), url("../font/videoplayer.woff") format("woff"), url("../font/videoplayer.ttf") format("truetype"); }
+
+.yvphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'videoplayer';
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #fff; }
+
+.yvphicon-play:before {
+  content: "\0021"; }
+
+.yvphicon-pause:before {
+  content: "\0022"; }
+
+.yvphicon-next:before {
+  content: "\0023"; }
+
+.yvphicon-square:before {
+  content: "\0024"; }
+
+.yvphicon-horn:before {
+  content: "\0025"; }
+
+.yvphicon-freverse:before {
+  content: "\0026"; }
+
+.yvphicon-fspead:before {
+  content: "\0027"; }
+
+.yvphicon-rightflag:before {
+  content: "\0028"; }
+
+.yvphicon-fullscreen:before {
+  content: "\0029"; }
+
+.yvp_icon {
+  background: url("../images/videoplayericon.png") 0 0;
+  background-size: 6.25em 6.25em; }
+
 .mod-yivideo-warp {
   width: 853px;
   height: 480px; }
@@ -112,19 +160,36 @@
   .yvp_button .yvp_btn_val {
     display: block;
     margin: auto;
-    width: 27px;
-    height: 28px;
-    line-height: 100;
+    width: 1.6875em;
+    height: 1.75em;
     overflow: hidden;
     background-size: contain; }
 
-.yvp_play_pause .yvp_btn_val {
-  background: rgba(0, 0, 0, 0) url(../images/play.svg) 0 0 no-repeat; }
+.yvp_button .yvphicon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  text-align: center; }
+  .yvp_button .yvphicon:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 1em;
+    text-align: center; }
 
-.yvp_next {
-  margin-left: 1px; }
-  .yvp_next .yvp_btn_val {
-    background: rgba(0, 0, 0, 0) url(../images/play.svg) 0 0 no-repeat; }
+.yvp_fullscreen .yvphicon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-size: 29px;
+  text-align: center; }
+  .yvp_fullscreen .yvphicon:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 0.70em;
+    text-align: center; }
 
 .yvp_fullscreen, .yvp_muted {
   float: right;
@@ -136,7 +201,7 @@
   margin-left: 9.5em;
   margin-right: 6.75em;
   overflow: hidden;
-  padding-top: 1em; }
+  padding-top: 1.125em; }
 
 .yvp_prograss {
   height: 1.75em;
@@ -198,23 +263,25 @@
     top: 0;
     padding-left: 1.625em;
     padding-right: 0.3125em;
-    line-height: 21, 16;
+    line-height: 1.3125em;
     top: 0.125em; }
     .yvp_prograss .yvp_contplay .checkbox {
       position: absolute;
       width: 1.3125em;
       height: 1.3125em;
       left: 0;
-      top: 0;
-      background: #ccc; }
+      top: 0; }
     .yvp_prograss .yvp_contplay .checkflag {
       width: 0.8125em;
       height: 0.8125em;
       position: absolute;
       top: 4px;
       left: 4px;
-      background: #fff; }
+      background-position: -1.75em -0.25em;
+      display: none; }
     .yvp_prograss .yvp_contplay b {
       font-weight: normal;
       font-size: 12px;
       color: #fbfbfb; }
+  .yvp_prograss .yvp_contplay_check .checkflag {
+    display: block; }
