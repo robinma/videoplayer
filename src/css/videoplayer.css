@@ -78,7 +78,8 @@
   color: #eee;
   background-color: #000;
   font-family: sans-serif;
-  font-size: 16px; }
+  font-size: 16px;
+  overflow: hidden; }
   .yvp_container div, .yvp_container p, .yvp_container a, .yvp_container span, .yvp_container em, .yvp_container strong, .yvp_container li, .yvp_container ul {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -160,7 +161,7 @@
   .yvp_button .yvp_btn_val {
     display: block;
     margin: auto;
-    width: 1.6875em;
+    width: 1.75em;
     height: 1.75em;
     overflow: hidden;
     background-size: contain; }
@@ -177,6 +178,9 @@
     left: 0;
     line-height: 1em;
     text-align: center; }
+
+.yvp_next {
+  margin-left: 1px; }
 
 .yvp_fullscreen .yvphicon {
   display: block;
@@ -203,11 +207,11 @@
   overflow: hidden;
   padding-top: 1.125em; }
 
-.yvp_prograss {
+.yvp_progress {
   height: 1.75em;
   padding: 0 7.9375em 0 3.8125em;
   position: relative; }
-  .yvp_prograss .yvp_time_panel {
+  .yvp_progress .yvp_time_panel {
     position: absolute;
     left: 0;
     top: 50%;
@@ -217,17 +221,17 @@
     text-align: center;
     color: #00bcd4;
     font-family: Arial; }
-  .yvp_prograss .yvp_time_panel_total {
+  .yvp_progress .yvp_time_panel_total {
     left: auto;
     right: 4.375em; }
-  .yvp_prograss .yvp_time_total {
+  .yvp_progress .yvp_time_total {
     position: relative;
     top: 11px;
     display: block;
     width: 100%;
     height: 6px;
     background-color: #fff; }
-  .yvp_prograss .yvp_time_loaded, .yvp_prograss .yvp_time_current {
+  .yvp_progress .yvp_time_loaded, .yvp_progress .yvp_time_current {
     position: absolute;
     left: 0;
     top: 0;
@@ -237,11 +241,11 @@
     height: 100%;
     box-sizing: border-box;
     background-color: #00e2ff; }
-  .yvp_prograss .yvp_time_loaded {
+  .yvp_progress .yvp_time_loaded {
     z-index: 1;
     background-color: #c1e7ec;
     border: 0 none; }
-  .yvp_prograss .yvp_time_handle {
+  .yvp_progress .yvp_time_handle {
     position: absolute;
     display: block;
     z-index: 3;
@@ -257,7 +261,7 @@
     background-image: -o-linear-gradient(135deg, #dedede, #fdfdfd);
     background-image: linear-gradient(135deg, #dedede, #fdfdfd);
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.3); }
-  .yvp_prograss .yvp_contplay {
+  .yvp_progress .yvp_contplay {
     position: absolute;
     right: 0;
     top: 0;
@@ -265,13 +269,13 @@
     padding-right: 0.3125em;
     line-height: 1.3125em;
     top: 0.125em; }
-    .yvp_prograss .yvp_contplay .checkbox {
+    .yvp_progress .yvp_contplay .checkbox {
       position: absolute;
       width: 1.3125em;
       height: 1.3125em;
       left: 0;
       top: 0; }
-    .yvp_prograss .yvp_contplay .checkflag {
+    .yvp_progress .yvp_contplay .checkflag {
       width: 0.8125em;
       height: 0.8125em;
       position: absolute;
@@ -279,9 +283,22 @@
       left: 4px;
       background-position: -1.75em -0.25em;
       display: none; }
-    .yvp_prograss .yvp_contplay b {
+    .yvp_progress .yvp_contplay b {
       font-weight: normal;
       font-size: 12px;
       color: #fbfbfb; }
-  .yvp_prograss .yvp_contplay_check .checkflag {
+  .yvp_progress .yvp_contplay_check .checkflag {
     display: block; }
+
+.yvp_progress_status {
+  padding: 0;
+  height: 4px;
+  border-bottom: 1px solid #e0e0e0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5; }
+  .yvp_progress_status .yvp_time_total {
+    top: 0;
+    height: 3px; }

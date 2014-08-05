@@ -39,7 +39,7 @@ video{
 .mod-yivideo-warp{width: 853px; height: 480px;}
 
 //video style
-.yvp_container{position: relative;width: 100%;height: 100%;max-width: 100%;max-height: 100%;@include user-select(none);color: #eee;background-color: #000;font-family: sans-serif;font-size: 16px;
+.yvp_container{position: relative;width: 100%;height: 100%;max-width: 100%;max-height: 100%;@include user-select(none);color: #eee;background-color: #000;font-family: sans-serif;font-size: 16px;overflow: hidden;
 div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
 }
 
@@ -58,13 +58,14 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
 };
 .yvp_button{height:pxToEm(60,16);width: pxToEm(75,16);float: left;@extend %backgroundOpacity;
     button{display: block;width: 100%;height: 100%;margin: 0;padding: 0;border: 0 none; background: rgba(0,0,0,0);cursor: pointer;}
-    .yvp_btn_val{display: block;margin: auto;width:pte(27,16);height:pte(28,16);overflow: hidden;background-size: contain;}
+    .yvp_btn_val{display: block;margin: auto;width:pte(28,16);height:pte(28,16);overflow: hidden;background-size: contain;}
 }
 .yvp_button{
     .yvphicon{display: block;width: 100%;height: 100%;font-size: 24px;text-align: center;
       &:before{position: absolute;top: 0;left: 0;line-height: 1em;text-align: center;}
     }
 }
+.yvp_next{margin-left: 1px;}
 .yvp_fullscreen{
   .yvphicon{display: block;width: 100%;height: 100%;font-size: 29px;text-align: center;
       &:before{position: absolute;top: 0;left: 0;line-height: 0.70em;text-align: center;}
@@ -73,7 +74,7 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
 
 .yvp_fullscreen,.yvp_muted{float: right;width: pxToEm(53,16);margin-left: 1px;}
 .yvp_prograss_wrap{height:pxToEm(60,16);margin-left:pxToEm(152,16);margin-right:pxToEm(108,16);overflow: hidden;padding-top: pxToEm(18,16);@extend %backgroundOpacity;}
-.yvp_prograss{height:pxToEm(28,16);padding: 0 pxToEm(127,16) 0 pxToEm(61,16);position: relative;
+.yvp_progress{height:pxToEm(28,16);padding: 0 pxToEm(127,16) 0 pxToEm(61,16);position: relative;
     .yvp_time_panel{position: absolute;left: 0;top: 50%;margin-top: -13px;font-size: pxToEm(14,16);width:pxToEm(60,16);text-align: center; color: #00bcd4;font-family: Arial;}
     .yvp_time_panel_total{left: auto;right:pxToEm(70,16);}
 
@@ -89,4 +90,7 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
     .yvp_contplay_check{
       .checkflag{display: block;}
     }
+}
+.yvp_progress_status{padding: 0;height: 4px;border-bottom: 1px solid #e0e0e0;position:absolute;bottom: 0;left: 0;width: 100%;z-index: 5;
+  .yvp_time_total{top: 0;height: 3px;}
 }
