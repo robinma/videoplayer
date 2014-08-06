@@ -60,6 +60,7 @@
             this.render();
             this.renderSource();
             this.controlsInit();
+            this.events()
         },
         render: function() {
             var $el = $('<div id="mod_yvideo_player_${index}"><div class="yvp_container"></div></div>'.replace(/\${.*\}/i, this.index));
@@ -69,7 +70,24 @@
             $el.width(this.params.width)
         },
         events: function() {
-
+            var __=this;
+            this.$video.on('stalled',function(){
+                console.log('----- onstalled',__.index)
+            }).on('waiting',function(){
+                console.log('---- waiting',__.index)
+            }).on('loadeddata',function(){
+                console.log('----- loadeddata',__.index)
+            }).on('playing',function(){
+                console.log('----- playing',__.index)
+            }).on('seeking',function(){
+                //快进 寻找
+                console.log('----  seeking',__.index)
+            }).on('suspend',function(){
+                console.log('----  suspend',__.index)
+            }).on('seeked',function(){
+                //寻找完成
+                console.log('----  seeked',__.index)
+            })
         }
     });
 
@@ -349,7 +367,7 @@
                 __._progressBtnControl(lx, ly, oldLT);
             });
             mousemove.mouseup(function(){
-                __.$video[0].play()
+               // __.$video[0].play()
             });
 
             this._updataCurrentTime(__._formateTime(video[0].currentTime));
@@ -405,7 +423,7 @@
                 left: newLeft
             });
             var currtime= newLeft / totalWidth * video[0].duration;
-            video[0].pause();
+            //video[0].pause();
             video[0].currentTime = currtime;
 
             this._updataCurrentTime(this._formateTime(currtime));
