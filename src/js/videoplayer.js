@@ -140,7 +140,6 @@
         },
         _videoControl: function() {
             var params = this.params;
-            console.log(this.$video)
             if (params.autoPlay) {
                 this.$video[0].play();
             }
@@ -200,6 +199,9 @@
             video.on('pause', function() {
                 __._playChangeStatus();
             });
+            video.on('play',function(){
+                 __._playChangeStatus();
+            })
 
             var playcontrol = function() {
                 if (video[0].paused) {
@@ -207,7 +209,7 @@
                 } else {
                     video[0].pause();
                 }
-                __._playChangeStatus();
+                // __._playChangeStatus();
             };
             //trigger events
             this.$_playbtn.on('click', 'button', function() {
@@ -289,15 +291,16 @@
     //progress control
     $.extend(Video.prototype, {
         $_progress: '',
+        $_progressBtn: '',
         progressRender: function() {
             var progressObj = $('<div class="yvp_prograss_wrap">\
                     <div class="yvp_progress">\
                         <span class="yvp_time_panel yvp_time_panel_curr" node-type="curr-time"></span>\
                         <span class="yvp_time_panel yvp_time_panel_total" node-type="total-time"></span>\
-                        <span class="yvp_time_total">\
+                        <span class="yvp_time_total" node-node="prog-rail">\
                             <span class="yvp_time_loaded" node-type="buffer"></span>\
                             <span class="yvp_time_current" node-type="progress-bar">\
-                                <a href="javascript:;" class="yvp_time_handle"></a>\
+                                <a href="javascript:;" class="yvp_time_handle" node-type="progpress-btn"></a>\
                             </span>\
                         </span>\
                         <span class="yvp_contplay yvp_contplay_check">\
@@ -309,6 +312,7 @@
                 </div>');
             this.$_control.append(progressObj);
             this.$_progress = progressObj;
+            this.$_progressBtn = progressObj.find('a[node-type="progpress-btn"]');
             this._progressControl();
         },
         _progressControl: function() {
@@ -320,29 +324,37 @@
 
             })
 
-            video.on('loadedmetadata',function(){
+            video.on('loadedmetadata', function() {
                 __._updataTotalTime(__._formateTime(video[0].duration));
             })
             //progress downloading the media
-            video.on('progress',function(){
-                var timeRange=video[0].buffered;
-                if(timeRange.length == 1){
-                    __._updataBufferProgress(timeRange.start(0),timeRange.end(0));
+            video.on('progress', function() {
+                var timeRange = video[0].buffered;
+                if (timeRange.length == 1) {
+                    __._updataBufferProgress(timeRange.start(0), timeRange.end(0));
                 }
-                
+
             })
             //when video start play
-            video.on('play',function(){
+            video.on('play', function() {
                 console.log('played')
             })
 
-            video.on('pause',function(){
+            video.on('pause', function() {
                 console.log('---pause')
-                video[0].preload="none";
+
             })
+            //progress button slide
+            var mousemove = new mouseMove(this.$_progressBtn, function(lx, ly, oldLT) {
+                __._progressBtnControl(lx, ly, oldLT);
+            });
+            mousemove.mouseup(function(){
+                __.$video[0].play()
+            });
 
             this._updataCurrentTime(__._formateTime(video[0].currentTime));
             this._updataTotalTime(__._formateTime(video[0].duration));
+            //this._progressBtnControl();
         },
         //formate time exampla 1:05:54
         _formateTime: function(time) {
@@ -361,23 +373,135 @@
             this.$_totalTimeNode.text(time);
         },
         //updata buffer bar width
-        _updataBufferProgress:function(start,end){
+        _updataBufferProgress: function(start, end) {
             this.$_totalBuffer || (this.$_totalBuffer = this.$_progress.find('span[node-type="buffer"]'));
             var video = this.$video;
-            var persent=end/video[0].duration*100;
-            this.$_totalBuffer.width(persent+'%');
+            var persent = end / video[0].duration * 100;
+            this.$_totalBuffer.width(persent + '%');
         },
         //updata current play probress bar width
-        _updataPlayProgress:function(second){
-            this.$_playProgress || (this.$_playProgress = this.$_progress.find('span[node-type="progress-bar"]'));;
+        _updataPlayProgress: function(second) {
+            this.$_playProgress || (this.$_playProgress = this.$_progress.find('span[node-type="progress-bar"]'));
+            this.$_progRailObj || (this.$_progRailObj = this.$_progress.find('span[node-node="prog-rail"]'));
+
             var video = this.$video;
-            var persent=second/video[0].duration*100;
-            this.$_playProgress.width(persent+'%');
+            var persent = second / video[0].duration;
+            this.$_playProgress.width(persent * 100 + '%');
+            this.$_progressBtn.css({
+                left: this.$_progRailObj.width() * persent
+            });
+        },
+        //control progress button
+        _progressBtnControl: function(lx, ly, oldLT) {
+            this.$_progRailObj || (this.$_progRailObj = this.$_progress.find('span[node-node="prog-rail"]'));
+            var video = this.$video;
+            var totalWidth = this.$_progRailObj.width();
+            var proBtn = this.$_progressBtn;
+            var newLeft = oldLT.left + lx;
+
+            if (newLeft < 0) newLeft = 0;
+            if (newLeft > totalWidth) newLeft = totalWidth;
+            proBtn.css({
+                left: newLeft
+            });
+            var currtime= newLeft / totalWidth * video[0].duration;
+            video[0].pause();
+            video[0].currentTime = currtime;
+
+            this._updataCurrentTime(this._formateTime(currtime));
+            this._updataPlayProgress(currtime);
+
         }
 
 
     });
 
+    //mousemove class
+    var $dcmen = $(document);
+    var mouseMove = function(targetObj, callback) {
+        this.target = targetObj;
+        this.random = (Math.random() * 10000 * 8 | 0).toString(16);
+        this.whenmousedown=null;
+        this.wnenmouseup=null;
+        this.oldPos;
+        this.oldmouse;
+        this.oldLT;
+        this.groupStatus = false;
+        this.callback = callback;
+        this.init();
+    };
+    $.extend(mouseMove.prototype, {
+        init: function() {
+            var __ = this;
+            this.target.css({
+                'cursor': 'pointer'
+            });
+            this.target.on('mousedown.' + this.random, function(e) {
+                __._mousedown(e);
+                __.oldLT = {
+                    left: parseInt(__.target.css('left')),
+                    top: parseInt(__.target.css('top'))
+                }
+                if(typeof __.whenmousedown === 'function' ){
+                    __.whenmousedown()
+                }
+                __.groupStatus = true;
+                $dcmen.on('mousemove.' + __.random, function(e) {
+                    //清除选择
+                    window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+                    if (!__.groupStatus) return;
+                    __._mousemove(e);
+                }).on('mouseup.' + __.random, function(e) {
+                    __._mouseup();
+                });
+            });
+
+        },
+        _mousedown: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.groupStatus = true;
+            this.oldmouse = {
+                x: e.clientX,
+                y: e.clientY
+            }
+        },
+        _mousemove: function(e) {
+            var currs = {
+                x: e.clientX,
+                y: e.clientY
+            }
+            var nx = currs.x - this.oldmouse.x;
+            var ny = currs.y - this.oldmouse.y;
+
+            if (typeof this.callback === 'function') {
+                this.callback(nx, ny, this.oldLT);
+            }
+        },
+        _mouseup: function() {
+            var __ = this;
+            __.groupStatus = false;
+            $dcmen.unbind('mousemove.' + __.random);
+            $dcmen.unbind('mouseup.' + __.random);
+            if(typeof __.wnenmouseup === 'function'){
+                __.wnenmouseup()
+            }
+        },
+        mousedown:function(fn){
+            if(typeof fn === 'function'){
+                this.whenmousedown = fn;
+                return;
+            }
+        },
+        mouseup:function(fn){
+            if(typeof fn === 'function'){
+                this.wnenmouseup = fn;
+                return;
+            }
+        }
+
+
+    });
 
     var videPlayerObj = new videoPlayer();
 

@@ -243,10 +243,7 @@
     height: 100%;
     box-sizing: border-box;
     background-color: #00e2ff;
-    width: 0;
-    -moz-transition: all ease-in-out 0.25s;
-    -webkit-transition: all ease-in-out 0.25s;
-    transition: all ease-in-out 0.25s; }
+    width: 0; }
   .yvp_progress .yvp_time_loaded {
     z-index: 1;
     background-color: #c1e7ec;
@@ -256,7 +253,7 @@
     display: block;
     z-index: 3;
     top: -5px;
-    right: -8px;
+    left: 0px;
     width: 16px;
     height: 16px;
     font-size: 0;
@@ -266,7 +263,8 @@
     background-image: -webkit-linear-gradient(135deg, #dedede, #fdfdfd);
     background-image: -o-linear-gradient(135deg, #dedede, #fdfdfd);
     background-image: linear-gradient(135deg, #dedede, #fdfdfd);
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3); }
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    margin-left: -8px; }
   .yvp_progress .yvp_contplay {
     position: absolute;
     right: 0;
