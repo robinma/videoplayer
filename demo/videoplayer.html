@@ -78,10 +78,12 @@
     <script type="text/javascript">
         var videoplayer=videoPlayer('mod_player',{
             setSource:function(canplayType){
-                console.log('----------canplaytype',canplayType);
                 if(canplayType == 'mp4'){
-                    return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
+                    return 'http://101.71.72.27/vlive.qqvideo.tc.qq.com/i0014wpk4xe.mp4?vkey=78BB352826321B53B7DE4AE6ED9218BB833D1D546D56DEB375E76434CDAC524A494261FF946E65623D90E63ED62C6D0105EFD8A07DCD58B1&br=60&platform=2&fmt=mp4&level=0&sdtfrom=v4010&locid=e997edf2-2855-47f6-908f-ef9c7207e79c&size=171555179&ocid=3559071660'
                 }
+            },
+            nextSource:function(canplayType){
+
             },
             success:function(video,node,videoObj){
 
