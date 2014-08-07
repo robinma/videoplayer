@@ -44,11 +44,14 @@
     var Video = function(playerId, params, index, parent) {
             this.index = index;
             this._parent = parent;
-            this.playerwarp = $('#' + playerId);
+            this.placeholder = $('#' + playerId);
             this.src = '';
             this.params = $.extend({
                 setSource: null,
                 autoPlay: false,
+                continuousPlay: false,
+                virtualFullScreen: true,
+                muted: false,
                 width: 853,
                 height: 480
             }, params);
@@ -63,30 +66,35 @@
             this.events()
         },
         render: function() {
-            var $el = $('<div id="mod_yvideo_player_${index}"><div class="yvp_container"></div></div>'.replace(/\${.*\}/i, this.index));
-            this.playerwarp.html($el);
-            this.$el = $el.find('.yvp_container');
-            $el.height(this.params.height)
-            $el.width(this.params.width)
+            this.$warp=$('<div id="mod_yvideo_player_${index}"></div></div>'.replace(/\${.*\}/i, this.index));
+            this.$el=$('<div class="yvp_container"></div>');
+
+            this.placeholder.html(this.$warp);
+            this.$el.appendTo(this.$warp);
+            this.$warp.height(this.params.height)
+            this.$warp.width(this.params.width)
         },
         events: function() {
-            var __=this;
-            this.$video.on('stalled',function(){
-                console.log('----- onstalled',__.index)
-            }).on('waiting',function(){
-                console.log('---- waiting',__.index)
-            }).on('loadeddata',function(){
-                console.log('----- loadeddata',__.index)
-            }).on('playing',function(){
-                console.log('----- playing',__.index)
-            }).on('seeking',function(){
+            var __ = this;
+            this.$video.on('stalled', function() {
+                console.log('----- onstalled', __.index)
+            }).on('waiting', function() {
+                console.log('---- waiting', __.index)
+            }).on('loadeddata', function() {
+                console.log('----- loadeddata', __.index)
+            }).on('playing', function() {
+                console.log('----- playing', __.index)
+            }).on('seeking', function() {
                 //快进 寻找
-                console.log('----  seeking',__.index)
-            }).on('suspend',function(){
-                console.log('----  suspend',__.index)
-            }).on('seeked',function(){
+                console.log('----  seeking', __.index)
+            }).on('suspend', function() {
+                console.log('----  suspend', __.index)
+            }).on('seeked', function() {
                 //寻找完成
-                console.log('----  seeked',__.index)
+                console.log('----  seeked', __.index)
+            }).on('error', function(e) {
+                console.log('error', e, __.$video[0].readyState, __.$video[0].error)
+
             })
         }
     });
@@ -175,6 +183,7 @@
             this.fullScreenRender();
             this.mutedRender();
             this.progressRender();
+            this.continueInit();
         },
         renderControls: function() {
             var controlswarp = $('<div class="yvp_controls"></div>');
@@ -194,6 +203,7 @@
         $_playFullBtn: '',
         playRender: function() {
             var playpause = $('<div class="yvp_button yvp_play_pause">\
+                    <div class="yvp_button_under"></div>\
                     <button type="button" title="播放/暂停">\
                         <span class="yvp_btn_val">\
                         </span>\
@@ -217,8 +227,8 @@
             video.on('pause', function() {
                 __._playChangeStatus();
             });
-            video.on('play',function(){
-                 __._playChangeStatus();
+            video.on('play', function() {
+                __._playChangeStatus();
             })
 
             var playcontrol = function() {
@@ -264,6 +274,7 @@
     $.extend(Video.prototype, {
         nextRender: function() {
             var nextObj = $('<div class="yvp_button yvp_next">\
+                    <div class="yvp_button_under"></div>\
                     <button type="button" title="next">\
                         <span class="yvp_btn_val">\
                             <em class="yvphicon yvphicon-next"></em>\
@@ -280,8 +291,11 @@
     //fullScreen control
 
     $.extend(Video.prototype, {
+        $_fullscreen: '',
+        _isFullScreen: false,
         fullScreenRender: function() {
             var fullScreenObj = $('<div class="yvp_button yvp_fullscreen">\
+                    <div class="yvp_button_under"></div>\
                     <button type="button" title="full_screen">\
                         <span class="yvp_btn_val">\
                             <em class="yvphicon yvphicon-fullscreen"></em>\
@@ -289,20 +303,180 @@
                     </button>\
                 </div>');
             this.$_control.append(fullScreenObj);
-        }
+            this.$_fullscreen = fullScreenObj;
+            this._fullScreenControl()
+        },
+        _fullScreenControl: function() {
+            var __ = this;
+            var params = this.params;
+
+            var fullScreen =  new virtualFullScreen(__);
+
+            this.$_fullscreen.on('click', 'button', function() {
+
+                if (params.virtualFullScreen) {
+                    __._isFullScreen = !__._isFullScreen;
+                    if (__._isFullScreen) {
+
+                        __._fullscreen_nfullicon();
+                    } else {
+
+                        __._fullscreen_toFull();
+                    }
+
+                } else {
+                    //default fullscreen
+                    __._fullscreen_defaultFull();
+                }
+            });
+
+
+        },
+        _fullscreen_nfullicon: function() {
+
+        },
+        _fullscreen_fullicon: function() {
+
+        },
+        _fullscreen_toFull: function() {
+            var __ = this;
+            // if()
+        },
+        _fullscreen_cancel: function() {
+
+        },
+        _fullscreen_defaultFull:function(){
+            var video = document.createElement("video");
+            if(video.mozRequestFullScreen){
+                return function(){
+                    var __=this;
+                    __.$video[0].mozRequestFullScreen();
+                }
+            }else if(video.webkitEnterFullScreen){
+                return function(){
+                    var __=this;
+                    __.$video[0].webkitEnterFullScreen();
+                }
+            }else{
+                return function(){
+                    alert('can not enter fullscreen');
+                }
+            }
+        }()
+
     });
 
     //muted control
     $.extend(Video.prototype, {
+        $_muted: '',
+        $_muted_bar: '',
+        $_muted_flag: '',
         mutedRender: function() {
+            var __ = this;
             var mutedObj = $('<div class="yvp_button yvp_muted">\
+                    <div class="yvp_button_under"></div>\
+                    <div class="yvp_muted_warp">\
+                            <div class="muted_barwarp">\
+                                <div class="muted_arrow_b">\
+                                    <span class="yvp_muted_tbg"></span>\
+                                </div>\
+                                <div class="muted_arrow_b muted_arrow_u" node-type="volum_flag">\
+                                    <span class="yvp_muted_tbg"></span>\
+                                </div>\
+                                <a href="javascript:;" class="muted_ribtn" node-type="volum_cbar"></a>\
+                            </div>\
+                        </div>\
                     <button type="button" title="muted">\
                         <span class="yvp_btn_val">\
-                            <em class="yvphicon yvphicon-horn"></em>\
+                            <em class="yvphicon yvphicon-muted"></em>\
                         </span>\
                     </button>\
                 </div>');
-            this.$_control.append(mutedObj);
+            __.$_control.append(mutedObj);
+            __.$_muted = mutedObj;
+            __.$_muted_bar = mutedObj.find('a[node-type="volum_cbar"]');
+            __.$_muted_flag = mutedObj.find('div[node-type="volum_flag"]')
+            __.$volumHeight = mutedObj.find('.muted_barwarp').height();
+            __._mutedControl()
+        },
+        _mutedControl: function() {
+            var __ = this,
+                video = __.$video;
+            var params = __.params;
+            this.$_muted.on('mousemove', function() {
+                __.$_muted.addClass('yvp_muted_over');
+            }).on('mouseout', function() {
+                __.$_muted.removeClass('yvp_muted_over');
+            });
+            this.$_muted.find('.yvp_btn_val').on('click', function() {
+                if (video[0].muted == true) {
+                    video[0].muted = false
+                } else {
+                    video[0].muted = true
+                }
+                __._mutedSet();
+            })
+
+            video.on('volumechange', function() {
+                if (video[0].muted) {
+                    __._mutedunSet();
+                } else {
+                    __._mutedSet();
+                    __._muted_setVolum()
+                }
+            }).on('loadedmetadata', function() {
+                __._muted_setVolum();
+            });
+            //control volume
+            var mutedBar = new mouseMove(__.$_muted_bar, function(nx, ny, oldLT) {
+                __._mutedVolume(nx, ny, oldLT);
+            });
+
+            //set define
+            video[0].muted = params.muted;
+        },
+        //set muted value for muted or not muted
+        _mutedSet: function() {
+            var __ = this;
+            var icon = __.$_muted.find('.yvp_btn_val');
+            icon.html('<em class="yvphicon yvphicon-muted"></em>');
+            icon.find('.yvphicon').css({
+                'color': '#fff'
+            })
+        },
+        _mutedunSet: function() {
+            var __ = this;
+            var icon = __.$_muted.find('.yvp_btn_val');
+            icon.html('<em class="yvphicon yvphicon-nomuted"></em>');
+            icon.find('.yvphicon').css({
+                'color': '#aaa'
+            })
+        },
+        _muted_setVolum: function() {
+            var __ = this;
+            var hei = __.$volumHeight;
+            var volum = __.$video[0].volume;
+            var percent = 1 - volum;
+            var Postop = hei * volum;
+
+            this.$_muted_bar.css({
+                'bottom': Postop
+            });
+            this.$_muted_flag.css({
+                "height": percent * 100 + '%'
+            });
+        },
+        //set volume value
+        _mutedVolume: function(nx, ny, oldLT) {
+            var __ = this;
+            var hei = __.$volumHeight;
+            var newTop = oldLT.bottom - ny;
+
+            if (newTop > hei) newTop = hei;
+            if (newTop < 0) newTop = 0;
+            this.$video[0].volume = newTop / hei;
+
+
         }
     })
 
@@ -321,7 +495,7 @@
                                 <a href="javascript:;" class="yvp_time_handle" node-type="progpress-btn"></a>\
                             </span>\
                         </span>\
-                        <span class="yvp_contplay yvp_contplay_check">\
+                        <span class="yvp_contplay" node-type="contp-lay">\
                             <span class="yvp_icon checkbox"></span>\
                             <span class="yvp_icon checkflag"></span>\
                             <b>连播</b>\
@@ -366,8 +540,8 @@
             var mousemove = new mouseMove(this.$_progressBtn, function(lx, ly, oldLT) {
                 __._progressBtnControl(lx, ly, oldLT);
             });
-            mousemove.mouseup(function(){
-               // __.$video[0].play()
+            mousemove.mouseup(function() {
+                // __.$video[0].play()
             });
 
             this._updataCurrentTime(__._formateTime(video[0].currentTime));
@@ -422,7 +596,7 @@
             proBtn.css({
                 left: newLeft
             });
-            var currtime= newLeft / totalWidth * video[0].duration;
+            var currtime = newLeft / totalWidth * video[0].duration;
             //video[0].pause();
             video[0].currentTime = currtime;
 
@@ -430,8 +604,38 @@
             this._updataPlayProgress(currtime);
 
         }
+    });
 
-
+    //continues play
+    $.extend(Video.prototype, {
+        $_continuePlay: '',
+        continueInit: function() {
+            this.$_continuePlay = this.$_progress.find('span[node-type="contp-lay"]');
+            this._continueEvents();
+        },
+        _continueEvents: function() {
+            var __ = this;
+            this.$_continuePlay.on('click', function() {
+                console.log('======= conplay')
+                var params = __.params;
+                params.continuousPlay = !params.continuousPlay;
+                __._continueControl();
+            });
+            __._continueControl()
+        },
+        _continueControl: function() {
+            if (this.params.continuousPlay) {
+                this._continueSelect()
+            } else {
+                this._continueUnSelect()
+            }
+        },
+        _continueSelect: function() {
+            this.$_continuePlay.addClass('yvp_contplay_check');
+        },
+        _continueUnSelect: function() {
+            this.$_continuePlay.removeClass('yvp_contplay_check');
+        }
     });
 
     //mousemove class
@@ -439,8 +643,8 @@
     var mouseMove = function(targetObj, callback) {
         this.target = targetObj;
         this.random = (Math.random() * 10000 * 8 | 0).toString(16);
-        this.whenmousedown=null;
-        this.wnenmouseup=null;
+        this.whenmousedown = null;
+        this.wnenmouseup = null;
         this.oldPos;
         this.oldmouse;
         this.oldLT;
@@ -458,9 +662,11 @@
                 __._mousedown(e);
                 __.oldLT = {
                     left: parseInt(__.target.css('left')),
-                    top: parseInt(__.target.css('top'))
+                    top: parseInt(__.target.css('top')),
+                    bottom: parseInt(__.target.css('bottom')),
+                    right: parseInt(__.target.css('right')),
                 }
-                if(typeof __.whenmousedown === 'function' ){
+                if (typeof __.whenmousedown === 'function') {
                     __.whenmousedown()
                 }
                 __.groupStatus = true;
@@ -501,24 +707,80 @@
             __.groupStatus = false;
             $dcmen.unbind('mousemove.' + __.random);
             $dcmen.unbind('mouseup.' + __.random);
-            if(typeof __.wnenmouseup === 'function'){
+            if (typeof __.wnenmouseup === 'function') {
                 __.wnenmouseup()
             }
         },
-        mousedown:function(fn){
-            if(typeof fn === 'function'){
+        mousedown: function(fn) {
+            if (typeof fn === 'function') {
                 this.whenmousedown = fn;
                 return;
             }
         },
-        mouseup:function(fn){
-            if(typeof fn === 'function'){
+        mouseup: function(fn) {
+            if (typeof fn === 'function') {
                 this.wnenmouseup = fn;
                 return;
             }
         }
 
 
+    });
+
+    //fullscreen
+    var $body = $("body"),$win=$(window);
+    var virtualFullScreen = function(video) {
+        this.$mask;
+        this.video = video;
+        this.switch=false;
+        this.init();
+    };
+    $.extend(virtualFullScreen.prototype, {
+        init:function(){
+            this._insertMask()
+            this.enterFullScreen();
+        },
+        events:function(){
+            var __=this;
+            $win.on('resize',function(){
+                __._setWarpInfo()
+            });
+        },
+        _setWarpInfo:function(){
+            var width = this.$mask.width();
+            var height = this.$mask.height();
+            var params = this.video.params;
+            var videoRatio= params.width/params.height;
+            var nwidth = width*0.9;
+            if(nwidth<320) nwidth=320;
+            var nheight = nwidth / videoRatio;
+
+            this.$warp.width(nwidth);
+            this.$warp.height(nheight)
+            this.$warp.css({'padding-top':(height-nheight)/2})
+
+        },
+        enterFullScreen:function(){
+            this.video.$el.appendTo(this.$warp)
+            this._setWarpInfo()
+            this.events()
+
+        },
+        cancelFullScreen:function(){
+            this.video.$el.appendTo(this.video.$warp);
+            
+        },
+        _insertMask:function(){
+            $body.css({'overflow':'hidden'});
+            var mask=$('<div class="yvp_fullscreen_mask"></div>');
+            $body.append(mask);
+            this.$mask=mask;
+            this._insertVideoWarp();
+        },
+        _insertVideoWarp:function(){
+           this.$warp=$('<div class="yvp_fullscreen_vwarp"></div>');
+           this.$mask.append(this.$warp);
+        }
     });
 
     var videPlayerObj = new videoPlayer();

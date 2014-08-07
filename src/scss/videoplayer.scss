@@ -8,7 +8,7 @@
 
 //define style
 
-.yvp_container{font-size: 16px;line-height: 1.5em;
+.yvp_container,.fvp_fullscreen{font-size: 16px;line-height: 1.5em;
 audio,
 canvas,
 progress,
@@ -27,7 +27,8 @@ video{
 .yvphicon-pause:before{content: "\0022";}
 .yvphicon-next:before{content: "\0023";}
 .yvphicon-square:before{content: "\0024";}
-.yvphicon-horn:before{content: "\0025";}
+.yvphicon-muted:before{content: "\0025";}
+.yvphicon-nomuted:before{content: "\0025";}
 .yvphicon-freverse:before{content: "\0026";}
 .yvphicon-fspead:before{content: "\0027";}
 .yvphicon-rightflag:before{content: "\0028";}
@@ -56,20 +57,33 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
 %backgroundOpacity{
     background-color: rgba(0,0,0,0.4);
 };
-.yvp_button{height:pxToEm(60,16);width: pxToEm(75,16);float: left;@extend %backgroundOpacity;
-    button{display: block;width: 100%;height: 100%;margin: 0;padding: 0;border: 0 none; background: rgba(0,0,0,0);cursor: pointer;outline: none;}
+.yvp_button{height:pxToEm(60,16);width: pxToEm(75,16);float: left;position: relative; 
+    button{display: block;width: 100%;height: 100%;margin: 0;padding: 0;border: 0 none; background: rgba(0,0,0,0);cursor: pointer;outline: none;position: relative;z-index: 5;}
     .yvp_btn_val{display: block;margin: auto;width:pte(28,16);height:pte(28,16);overflow: hidden;background-size: contain;}
 }
 .yvp_button{
     .yvphicon{display: block;width: 100%;height: 100%;font-size: 24px;text-align: center;
       &:before{position: absolute;top: 0;left: 0;line-height: 1em;text-align: center;}
     }
+    .yvp_button_under{display: block;position: absolute;bottom: 0;left: 0;width: 100%;height: 100%;@extend %backgroundOpacity;z-index: 4;}
 }
 .yvp_next{margin-left: 1px;}
 .yvp_fullscreen{
   .yvphicon{display: block;width: 100%;height: 100%;font-size: 29px;text-align: center;
       &:before{position: absolute;top: 0;left: 0;line-height: 0.70em;text-align: center;}
     }
+}
+.yvp_muted_warp{position: absolute;width: 100%;height: 100%;top: -100%;left: 0;
+  .muted_barwarp{width: pte(10,16); height: pte(60,16);position: absolute;top:pte(14,16);left:pte(21.5,16); display: none;z-index: 6;}
+  .muted_arrow_b{width: 100%;height: 100%;overflow: hidden;position: absolute;top: 0;bottom: 0;}
+  .muted_arrow_u .yvp_muted_tbg{border-top-color:#fff; }
+  .yvp_muted_tbg{@include triangle(bottom,5px,#00e2ff);display: block; border-top-width: 70px;border-left-width: 10px;}
+  .muted_ribtn{display: block;width: 12px;height: 6px;border: 1px solid #fff;border-radius: 1px; @include gradient-vertical(#e0e0e0 ,#fff);position: absolute;box-shadow:0 0 5px rgba(0,0,0,0.22);  left: -1px;bottom: 14px;z-index: 6;}
+}
+
+.yvp_muted_over{
+  .yvp_button_under{height: 200%;}
+  .muted_barwarp{display: block;}
 }
 
 .yvp_fullscreen,.yvp_muted{float: right;width: pxToEm(53,16);margin-left: 1px;}
@@ -94,4 +108,12 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
 }
 .yvp_progress_status{padding: 0;height: 4px;border-bottom: 1px solid #e0e0e0;position:absolute;bottom: 0;left: 0;width: 100%;z-index: 5;
   .yvp_time_total{top: 0;height: 3px;}
+}
+
+/* Reset max-height when in full screen mode */
+video:-webkit-full-screen { max-height: 100%; }
+video:-moz-full-screen    { max-height: 100%; }
+
+.yvp_fullscreen_mask{position: fixed;width: 100%;height: 100%;background: rgba(0,0,0,.8);top: 0;left: 0;z-index: 100;min-width: 320px;
+  .yvp_fullscreen_vwarp{margin: 0 auto;}
 }
