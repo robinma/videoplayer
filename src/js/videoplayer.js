@@ -66,8 +66,8 @@
             this.events()
         },
         render: function() {
-            this.$warp=$('<div id="mod_yvideo_player_${index}"></div></div>'.replace(/\${.*\}/i, this.index));
-            this.$el=$('<div class="yvp_container"></div>');
+            this.$warp = $('<div id="mod_yvideo_player_${index}"></div></div>'.replace(/\${.*\}/i, this.index));
+            this.$el = $('<div class="yvp_container"></div>');
 
             this.placeholder.html(this.$warp);
             this.$el.appendTo(this.$warp);
@@ -95,6 +95,10 @@
             }).on('error', function(e) {
                 console.log('error', e, __.$video[0].readyState, __.$video[0].error)
 
+            }).on('loadedmetadata',function(){
+                console.log('start loadedmetadata',__.index)
+            }).on('loadstart',function(){
+                console.log('loadstart',__.index)
             })
         }
     });
@@ -310,18 +314,17 @@
             var __ = this;
             var params = this.params;
 
-            var fullScreen =  new virtualFullScreen(__);
+            var fullScreen = new virtualFullScreen(__);
 
             this.$_fullscreen.on('click', 'button', function() {
-
                 if (params.virtualFullScreen) {
                     __._isFullScreen = !__._isFullScreen;
                     if (__._isFullScreen) {
-
+                        fullScreen.enterFullScreen();
                         __._fullscreen_nfullicon();
                     } else {
-
-                        __._fullscreen_toFull();
+                        fullScreen.cancelFullScreen()
+                        __._fullscreen_fullicon();
                     }
 
                 } else {
@@ -333,32 +336,29 @@
 
         },
         _fullscreen_nfullicon: function() {
-
+            var __ = this;
+            var icon = __.$_fullscreen.find('.yvp_btn_val');
+            icon.html('<em class="yvphicon yvphicon-cancelscreen"></em>');
         },
         _fullscreen_fullicon: function() {
-
-        },
-        _fullscreen_toFull: function() {
             var __ = this;
-            // if()
+            var icon = __.$_fullscreen.find('.yvp_btn_val');
+            icon.html('<em class="yvphicon yvphicon-fullscreen"></em>');
         },
-        _fullscreen_cancel: function() {
-
-        },
-        _fullscreen_defaultFull:function(){
+        _fullscreen_defaultFull: function() {
             var video = document.createElement("video");
-            if(video.mozRequestFullScreen){
-                return function(){
-                    var __=this;
+            if (video.mozRequestFullScreen) {
+                return function() {
+                    var __ = this;
                     __.$video[0].mozRequestFullScreen();
                 }
-            }else if(video.webkitEnterFullScreen){
-                return function(){
-                    var __=this;
+            } else if (video.webkitEnterFullScreen) {
+                return function() {
+                    var __ = this;
                     __.$video[0].webkitEnterFullScreen();
                 }
-            }else{
-                return function(){
+            } else {
+                return function() {
                     alert('can not enter fullscreen');
                 }
             }
@@ -440,17 +440,11 @@
             var __ = this;
             var icon = __.$_muted.find('.yvp_btn_val');
             icon.html('<em class="yvphicon yvphicon-muted"></em>');
-            icon.find('.yvphicon').css({
-                'color': '#fff'
-            })
         },
         _mutedunSet: function() {
             var __ = this;
             var icon = __.$_muted.find('.yvp_btn_val');
             icon.html('<em class="yvphicon yvphicon-nomuted"></em>');
-            icon.find('.yvphicon').css({
-                'color': '#aaa'
-            })
         },
         _muted_setVolum: function() {
             var __ = this;
@@ -492,8 +486,8 @@
                         <span class="yvp_time_total" node-node="prog-rail">\
                             <span class="yvp_time_loaded" node-type="buffer"></span>\
                             <span class="yvp_time_current" node-type="progress-bar">\
-                                <a href="javascript:;" class="yvp_time_handle" node-type="progpress-btn"></a>\
                             </span>\
+                             <a href="javascript:;" class="yvp_time_handle" node-type="progpress-btn"></a>\
                         </span>\
                         <span class="yvp_contplay" node-type="contp-lay">\
                             <span class="yvp_icon checkbox"></span>\
@@ -572,15 +566,15 @@
             this.$_totalBuffer.width(persent + '%');
         },
         //updata current play probress bar width
-        _updataPlayProgress: function(second) {
+        _updataPlayProgress: function() {
             this.$_playProgress || (this.$_playProgress = this.$_progress.find('span[node-type="progress-bar"]'));
             this.$_progRailObj || (this.$_progRailObj = this.$_progress.find('span[node-node="prog-rail"]'));
 
             var video = this.$video;
-            var persent = second / video[0].duration;
+            var persent = video[0].currentTime / video[0].duration;
             this.$_playProgress.width(persent * 100 + '%');
             this.$_progressBtn.css({
-                left: this.$_progRailObj.width() * persent
+                left: persent * 100 + '%'
             });
         },
         //control progress button
@@ -601,7 +595,7 @@
             video[0].currentTime = currtime;
 
             this._updataCurrentTime(this._formateTime(currtime));
-            this._updataPlayProgress(currtime);
+            this._updataPlayProgress();
 
         }
     });
@@ -728,58 +722,70 @@
     });
 
     //fullscreen
-    var $body = $("body"),$win=$(window);
+    var $body = $("body"),
+        $win = $(window);
     var virtualFullScreen = function(video) {
         this.$mask;
         this.video = video;
-        this.switch=false;
+        this.switch = false;
+        this.bodyOf = $body.css('overflow');
         this.init();
     };
     $.extend(virtualFullScreen.prototype, {
-        init:function(){
-            this._insertMask()
-            this.enterFullScreen();
-        },
-        events:function(){
-            var __=this;
-            $win.on('resize',function(){
+        init: function() {},
+        events: function() {
+            var __ = this;
+            $win.on('resize', function() {
                 __._setWarpInfo()
             });
         },
-        _setWarpInfo:function(){
+        _setWarpInfo: function() {
             var width = this.$mask.width();
             var height = this.$mask.height();
             var params = this.video.params;
-            var videoRatio= params.width/params.height;
-            var nwidth = width*0.9;
-            if(nwidth<320) nwidth=320;
+            var videoRatio = params.width / params.height;
+            var nwidth = width * 0.9;
+            if (nwidth < 320) nwidth = 320;
             var nheight = nwidth / videoRatio;
 
             this.$warp.width(nwidth);
             this.$warp.height(nheight)
-            this.$warp.css({'padding-top':(height-nheight)/2})
+            this.$warp.css({
+                'padding-top': (height - nheight) / 2
+            })
 
         },
-        enterFullScreen:function(){
+        enterFullScreen: function() {
+            this._insertMask();
             this.video.$el.appendTo(this.$warp)
             this._setWarpInfo()
             this.events()
 
         },
-        cancelFullScreen:function(){
+        cancelFullScreen: function() {
             this.video.$el.appendTo(this.video.$warp);
-            
+            this._removeMask();
         },
-        _insertMask:function(){
-            $body.css({'overflow':'hidden'});
-            var mask=$('<div class="yvp_fullscreen_mask"></div>');
+        _insertMask: function() {
+            $body.css({
+                'overflow': 'hidden'
+            });
+            var mask = $('<div class="yvp_fullscreen_mask"></div>');
             $body.append(mask);
-            this.$mask=mask;
+            this.$mask = mask;
             this._insertVideoWarp();
         },
-        _insertVideoWarp:function(){
-           this.$warp=$('<div class="yvp_fullscreen_vwarp"></div>');
-           this.$mask.append(this.$warp);
+        _insertVideoWarp: function() {
+            this.$warp = $('<div class="yvp_fullscreen_vwarp"></div>');
+            this.$mask.append(this.$warp);
+        },
+        _removeMask: function() {
+            this.$warp.remove();
+            this.$mask.remove();
+            $body.css({
+                "overflow": this.bodyOf
+            });
+
         }
     });
 

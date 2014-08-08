@@ -58,7 +58,7 @@
   content: "\0025"; }
 
 .yvphicon-nomuted:before {
-  content: "\0025"; }
+  content: "\002B"; }
 
 .yvphicon-freverse:before {
   content: "\0026"; }
@@ -71,6 +71,12 @@
 
 .yvphicon-fullscreen:before {
   content: "\0029"; }
+
+.yvphicon-cancelscreen:before {
+  content: "\002A"; }
+
+.yvphicon-unhappy:before {
+  content: "\002C"; }
 
 .yvp_icon {
   background: url("../images/videoplayericon.png") 0 0;
@@ -189,14 +195,16 @@
   display: block;
   width: 100%;
   height: 100%;
-  font-size: 24px;
+  font-size: 22px;
   text-align: center; }
   .yvp_button .yvphicon:before {
     position: absolute;
     top: 0;
     left: 0;
-    line-height: 1em;
-    text-align: center; }
+    text-align: center;
+    display: block;
+    width: 100%;
+    height: 100%; }
 .yvp_button .yvp_button_under {
   display: block;
   position: absolute;
@@ -219,7 +227,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    line-height: 0.70em;
     text-align: center; }
 
 .yvp_muted_warp {
@@ -264,7 +271,7 @@
     position: absolute;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.22);
     left: -1px;
-    bottom: 14px;
+    bottom: 0px;
     z-index: 6; }
 
 .yvp_muted_over .yvp_button_under {
@@ -381,6 +388,53 @@
   .yvp_progress_status .yvp_time_total {
     top: 0;
     height: 3px; }
+
+.yvp_deadly_error {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #595959;
+  top: 0;
+  left: 0;
+  z-index: 7;
+  text-align: center;
+  vertical-align: middle;
+  display: table; }
+
+.yvp_deadly_errtxt {
+  width: 400px;
+  text-align: left;
+  vertical-align: top;
+  display: table;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -200px;
+  margin-top: -30px; }
+  .yvp_deadly_errtxt .yvphicon {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    color: #fff;
+    font-size: 4.6875em;
+    text-align: center;
+    float: left; }
+    .yvp_deadly_errtxt .yvphicon:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-align: center;
+      display: block;
+      width: 100%;
+      height: 100%;
+      line-height: 1em; }
+  .yvp_deadly_errtxt .yvp_deadly_tip {
+    display: inline-block;
+    height: 3.75em;
+    overflow: hidden;
+    margin: 0px auto;
+    display: table-cell;
+    vertical-align: middle; }
 
 /* Reset max-height when in full screen mode */
 video:-webkit-full-screen {
