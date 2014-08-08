@@ -62,7 +62,7 @@
         init: function() {
             this.render();
             this.renderSource();
-            this.controlsInit();
+
             this.events()
         },
         render: function() {
@@ -99,7 +99,10 @@
                 console.log('start loadedmetadata',__.index)
             }).on('loadstart',function(){
                 console.log('loadstart',__.index)
+            }).on('ended',function(){
+                console.log('play ended')
             })
+
         }
     });
 
@@ -170,11 +173,20 @@
         },
         _videoControl: function() {
             var params = this.params;
+            var __=this;
             if (params.autoPlay) {
                 this.$video[0].play();
             }
+            this.$video.on('error',function(){
+                __._deadlyError();
+            }).on('loadedmetadata',function(){
+                __.controlsInit();
+            });
+
         }
     });
+    
+    
 
     //controls bar
     $.extend(Video.prototype, {
@@ -251,6 +263,9 @@
                 playcontrol()
             });
             this._playChangeStatus();
+        },
+        play:function(){
+            this.$video[0].play();
         },
         _playChangeStatus: function() {
             var video = this.$video;
@@ -403,11 +418,22 @@
             var __ = this,
                 video = __.$video;
             var params = __.params;
+
             this.$_muted.on('mousemove', function() {
                 __.$_muted.addClass('yvp_muted_over');
             }).on('mouseout', function() {
                 __.$_muted.removeClass('yvp_muted_over');
             });
+
+            video.on('volumechange', function() {
+                if (video[0].muted) {
+                    __._mutedunSet();
+                } else {
+                    __._mutedSet();
+                    __._muted_setVolum()
+                }
+            });
+
             this.$_muted.find('.yvp_btn_val').on('click', function() {
                 if (video[0].muted == true) {
                     video[0].muted = false
@@ -417,16 +443,6 @@
                 __._mutedSet();
             })
 
-            video.on('volumechange', function() {
-                if (video[0].muted) {
-                    __._mutedunSet();
-                } else {
-                    __._mutedSet();
-                    __._muted_setVolum()
-                }
-            }).on('loadedmetadata', function() {
-                __._muted_setVolum();
-            });
             //control volume
             var mutedBar = new mouseMove(__.$_muted_bar, function(nx, ny, oldLT) {
                 __._mutedVolume(nx, ny, oldLT);
@@ -434,6 +450,7 @@
 
             //set define
             video[0].muted = params.muted;
+            __._muted_setVolum();
         },
         //set muted value for muted or not muted
         _mutedSet: function() {
@@ -519,23 +536,10 @@
                 if (timeRange.length == 1) {
                     __._updataBufferProgress(timeRange.start(0), timeRange.end(0));
                 }
-
-            })
-            //when video start play
-            video.on('play', function() {
-                console.log('played')
-            })
-
-            video.on('pause', function() {
-                console.log('---pause')
-
             })
             //progress button slide
             var mousemove = new mouseMove(this.$_progressBtn, function(lx, ly, oldLT) {
                 __._progressBtnControl(lx, ly, oldLT);
-            });
-            mousemove.mouseup(function() {
-                // __.$video[0].play()
             });
 
             this._updataCurrentTime(__._formateTime(video[0].currentTime));
@@ -629,6 +633,48 @@
         },
         _continueUnSelect: function() {
             this.$_continuePlay.removeClass('yvp_contplay_check');
+        }
+    });
+
+    //error
+    $.extend(Video.prototype,{
+        $deadly:'',
+        _deadlyError:function(){
+
+            var deadly = '<div class="yvp_deadly_error">\
+                <div class="yvp_deadly_errtxt">\
+                    <span class="yvphicon yvphicon-unhappy"></span>\
+                    <span class="yvp_deadly_tip">${errorTxt}</span>\
+                </div>\
+            </div>';
+            var errortxt = this._deadlyMsg();
+
+            this.$el.append(deadly.replace('${errorTxt}',errortxt));
+        },
+        _deadlyErrorControl:function(){
+
+        },
+        _deadlyMsg:function(){
+            var __=this;
+            var video = __.$video,errorTxt='';
+            switch(video[0].error.code){
+                case 1:
+                errorTxt='用户终止错误';
+                break;
+                case 2:
+                errorTxt='网络发生未知错误';
+                break;
+                case 3:
+                errorTxt='视频解码错误';
+                break;
+                case 4:
+                errorTxt='视频地址错误';
+                break;
+                default:
+                errorTxt='未知错误';
+                break;
+            }
+            return errorTxt + '('+video[0].error.code+')';
         }
     });
 
@@ -727,12 +773,11 @@
     var virtualFullScreen = function(video) {
         this.$mask;
         this.video = video;
-        this.switch = false;
+        this.playStatus = false;
         this.bodyOf = $body.css('overflow');
-        this.init();
+        // this.init();
     };
     $.extend(virtualFullScreen.prototype, {
-        init: function() {},
         events: function() {
             var __ = this;
             $win.on('resize', function() {
@@ -756,9 +801,11 @@
 
         },
         enterFullScreen: function() {
+            console.log(this.video.$video)
             this._insertMask();
             this.video.$el.appendTo(this.$warp)
             this._setWarpInfo()
+            this.video.play();
             this.events()
 
         },

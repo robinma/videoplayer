@@ -113,23 +113,25 @@
 
         });
 
-        // var videoplayer=videoPlayer('mod_player',{
-        //     continuousPlay:true,
-        //     virtualFullScreen:false,
-        //     setSource:function(canplayType){
+        var videoplayer=videoPlayer('mod_player',{
+            continuousPlay:true,
+           // virtualFullScreen:false,
+            setSource:function(canplayType){
 
-        //         if(canplayType == 'mp4'){
-        //             return 'http://101.71.72.23/vhot2.qqvideo.tc.qq.com/c0133ztz9aw.mp4?vkey=7D700F5B8354C46A7979EC5C079B4FD391846BA5583B3047745370E84C3427CDCDE33CD09902D0F80B82680320B625E4E2CFCEE0D0449DA6&br=60&platform=2&fmt=mp4&level=0&sdtfrom=v4010&locid=2e6766cc-1f19-4059-9042-a757788dba82&size=31269211&ocid=3324190636'
-        //         }
-        //     },
-        //     nextSource:function(canplayType){
+                if(canplayType == 'mp4'){
+                    //return 'http://101.71.72.23/vhot2.qqvideo.tc.qq.com/c0133ztz9aw.mp4?vkey=7D700F5B8354C46A7979EC5C079B4FD391846BA5583B3047745370E84C3427CDCDE33CD09902D0F80B82680320B625E4E2CFCEE0D0449DA6&br=60&platform=2&fmt=mp4&level=0&sdtfrom=v4010&locid=2e6766cc-1f19-4059-9042-a757788dba82&size=31269211&ocid=3324190636'
 
-        //     },
-        //     success:function(video,node,videoObj){
+                    return 'http://101.71.72.22/vhot2.qqvideo.tc.qq.com/o0134magjbp.mp4?vkey=540006FD25A8E54AEECAC334B1FA508B2AD6DAF52DCA4C16BB77F7F96C1C4D4792A1727C8D36FBF97F28B71313E026BF4A06E4FF1F5CF535&br=60&platform=2&fmt=mp4&level=0&sdtfrom=v4010&locid=a64d75fa-f05d-4e74-ba0c-e40c81f2cba8&size=15954162&ocid=3340967852'
+                }
+            },
+            nextSource:function(canplayType){
 
-        //     }
+            },
+            success:function(video,node,videoObj){
 
-        // });
+            }
+
+        });
 
     </script>
 </body>
