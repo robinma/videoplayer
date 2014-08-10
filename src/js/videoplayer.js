@@ -46,6 +46,7 @@
             this._parent = parent;
             this.placeholder = $('#' + playerId);
             this.src = '';
+            this.isPlay;
             this.params = $.extend({
                 setSource: null,
                 autoPlay: false,
@@ -95,12 +96,20 @@
             }).on('error', function(e) {
                 console.log('error', e, __.$video[0].readyState, __.$video[0].error)
 
-            }).on('loadedmetadata',function(){
-                console.log('start loadedmetadata',__.index)
-            }).on('loadstart',function(){
-                console.log('loadstart',__.index)
-            }).on('ended',function(){
+            }).on('loadedmetadata', function() {
+                console.log('start loadedmetadata', __.index)
+            }).on('loadstart', function() {
+                console.log('loadstart', __.index)
+            }).on('ended', function() {
                 console.log('play ended')
+            })
+
+            this.$video.on('pause', function() {
+                __.isPlay = false;
+            }).on('play',function() {
+                __.isPlay = true;
+            }).on('ended', function() {
+                __.isPlay = false;
             })
 
         }
@@ -173,33 +182,40 @@
         },
         _videoControl: function() {
             var params = this.params;
-            var __=this;
+            var __ = this;
             if (params.autoPlay) {
                 this.$video[0].play();
             }
-            this.$video.on('error',function(){
+            this.$video.on('error', function() {
                 __._deadlyError();
-            }).on('loadedmetadata',function(){
-                __.controlsInit();
+            }).on('loadedmetadata', function() {
+
             });
+            this.controlsInit();
 
         }
     });
-    
-    
+
+
 
     //controls bar
     $.extend(Video.prototype, {
+        _showControl: true,
         $_control: '',
+        $_membrane: '',
+        $_minprogress: '',
         controlsInit: function() {
-
+            this.insertMembrane();
             this.renderControls();
+            this.renderDefProgress()
             this.playRender();
             this.nextRender()
             this.fullScreenRender();
             this.mutedRender();
             this.progressRender();
             this.continueInit();
+
+            this.controlEvents()
         },
         renderControls: function() {
             var controlswarp = $('<div class="yvp_controls"></div>');
@@ -210,6 +226,48 @@
         renderDefProgress: function() {
             var defProg = $('<div class="yvp_progress yvp_progress_status"></div>');
             this.$el.append(defProg);
+            this.$_minprogress = defProg;
+        },
+        insertMembrane: function() {
+            var membrane = $('<div class="yvp_membrane"></div>');
+            this.$el.append(membrane);
+            this.$_membrane = membrane;
+        },
+        controlEvents: function() {
+            var video = this.$video;
+            var __ = this;
+            this.$_membrane.on('click', function() {
+                __._play_on_off();
+            });
+
+            this.$video.on('play', function() {
+                __._controlBar_delayhide()
+            }).on('pause', function() {
+                __._controlBar_show()
+            }).on('ended',function(){
+                __._controlBar_show();
+            });
+            
+            this.$_control.on('mouseover',function(){
+
+            }).on('mouseout',function(){
+
+            });
+        },
+        _controlBar_show: function() {
+            this.$el.removeClass('yvp_container_hide');
+        },
+        _controlBar_hide: function() {
+            this.$el.addClass('yvp_container_hide');
+        },
+        _timer:'',
+        _controlBar_delayhide: function() {
+            var __ = this;
+            if(!this.isPlay) return;
+            clearTimeout(__._timer)
+            __._timer = setTimeout(function() {
+                __._controlBar_hide();
+            }, 1500);
         }
     });
 
@@ -247,24 +305,25 @@
                 __._playChangeStatus();
             })
 
-            var playcontrol = function() {
-                if (video[0].paused) {
-                    video[0].play();
-                } else {
-                    video[0].pause();
-                }
-                // __._playChangeStatus();
-            };
             //trigger events
             this.$_playbtn.on('click', 'button', function() {
-                playcontrol();
+                __._play_on_off();
             })
             this.$_playFullBtn.on('click', function() {
-                playcontrol()
+                __._play_on_off();
             });
             this._playChangeStatus();
         },
-        play:function(){
+        _play_on_off: function() {
+            var __ = this,
+                video = __.$video;
+            if (video[0].paused) {
+                video[0].play();
+            } else {
+                video[0].pause();
+            }
+        },
+        play: function() {
             this.$video[0].play();
         },
         _playChangeStatus: function() {
@@ -276,8 +335,6 @@
                 this._play_puaseicon();
                 this.$_playFullBtn.hide();
             }
-
-
         },
         _play_playicon: function() {
             var icon = this.$_playbtn.find('.yvp_btn_val');
@@ -513,7 +570,15 @@
                         </span>\
                     </div>\
                 </div>');
+
+            var minprogressObj = $('<span class="yvp_time_total">\
+                    <span class="yvp_time_loaded" node-type="buffer"></span>\
+                    <span class="yvp_time_current" node-type="progress-bar">\
+                    </span>\
+                </span>');
             this.$_control.append(progressObj);
+            this.$_minprogress.append(minprogressObj);
+
             this.$_progress = progressObj;
             this.$_progressBtn = progressObj.find('a[node-type="progpress-btn"]');
             this._progressControl();
@@ -565,14 +630,18 @@
         //updata buffer bar width
         _updataBufferProgress: function(start, end) {
             this.$_totalBuffer || (this.$_totalBuffer = this.$_progress.find('span[node-type="buffer"]'));
+            this.$_mintotalBuffer || (this.$_mintotalBuffer = this.$_minprogress.find('span[node-type="buffer"]'));
+
             var video = this.$video;
             var persent = end / video[0].duration * 100;
             this.$_totalBuffer.width(persent + '%');
+            this.$_mintotalBuffer.width(persent + '%');
         },
         //updata current play probress bar width
         _updataPlayProgress: function() {
             this.$_playProgress || (this.$_playProgress = this.$_progress.find('span[node-type="progress-bar"]'));
             this.$_progRailObj || (this.$_progRailObj = this.$_progress.find('span[node-node="prog-rail"]'));
+            this.$_minPlayProgress || (this.$_minPlayProgress = this.$_minprogress.find('span[node-type="progress-bar"]'));
 
             var video = this.$video;
             var persent = video[0].currentTime / video[0].duration;
@@ -580,6 +649,7 @@
             this.$_progressBtn.css({
                 left: persent * 100 + '%'
             });
+            this.$_minPlayProgress.width(persent * 100 + '%');
         },
         //control progress button
         _progressBtnControl: function(lx, ly, oldLT) {
@@ -637,9 +707,9 @@
     });
 
     //error
-    $.extend(Video.prototype,{
-        $deadly:'',
-        _deadlyError:function(){
+    $.extend(Video.prototype, {
+        $deadly: '',
+        _deadlyError: function() {
 
             var deadly = '<div class="yvp_deadly_error">\
                 <div class="yvp_deadly_errtxt">\
@@ -649,32 +719,33 @@
             </div>';
             var errortxt = this._deadlyMsg();
 
-            this.$el.append(deadly.replace('${errorTxt}',errortxt));
+            this.$el.append(deadly.replace('${errorTxt}', errortxt));
         },
-        _deadlyErrorControl:function(){
+        _deadlyErrorControl: function() {
 
         },
-        _deadlyMsg:function(){
-            var __=this;
-            var video = __.$video,errorTxt='';
-            switch(video[0].error.code){
+        _deadlyMsg: function() {
+            var __ = this;
+            var video = __.$video,
+                errorTxt = '';
+            switch (video[0].error.code) {
                 case 1:
-                errorTxt='用户终止错误';
-                break;
+                    errorTxt = '用户终止错误';
+                    break;
                 case 2:
-                errorTxt='网络发生未知错误';
-                break;
+                    errorTxt = '网络发生未知错误';
+                    break;
                 case 3:
-                errorTxt='视频解码错误';
-                break;
+                    errorTxt = '视频解码错误';
+                    break;
                 case 4:
-                errorTxt='视频地址错误';
-                break;
+                    errorTxt = '视频地址错误';
+                    break;
                 default:
-                errorTxt='未知错误';
-                break;
+                    errorTxt = '未知错误';
+                    break;
             }
-            return errorTxt + '('+video[0].error.code+')';
+            return errorTxt + '(' + video[0].error.code + ')';
         }
     });
 

@@ -8,75 +8,48 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         concat: {
-            me: {
-                src: [
-                    'src/js/me-header.js',
-                    'src/js/me-namespace.js',
-                    'src/js/me-utility.js',
-                    'src/js/me-plugindetector.js',
-                    'src/js/me-featuredetection.js',
-                    'src/js/me-mediaelements.js',
-                    'src/js/me-shim.js',
-                    'src/js/me-i18n.js',
-                    'src/js/me-i18n-locale-de.js',
-                    'src/js/me-i18n-locale-zh.js'
+            videoplayer:{
+                src:[
+                    'src/js/vp_header.js',
+                    'src/js/vp_exports.js',
+                    'src/js/vp_videoplayer.js',
+                    'src/js/vp_videoinit.js',
+                    'src/js/vp_canplaytype.js',
+                    'src/js/vp_rendersource.js',
+                    'src/js/vp_controlsbar.js',
+                    'src/js/vp_play.js',
+                    'src/js/vp_next.js',
+                    'src/js/vp_fullscreen.js',
+                    'src/js/vp_muted.js',
+                    'src?js/vp_progress.js',
+                    'src?js/vp_contunue.js',
+                    'src?js/vp_playerror.js',
+                    'src?js/vps_mousemove.js',
+                    'src?js/vps_fullscreen.js',
+                    'src?js/vp_end.js'
                 ],
-                dest: 'local-build/mediaelement.js'
-            },
-            mep: {
-                src: [
-                    'src/js/mep-header.js',
-                    'src/js/mep-library.js',
-                    'src/js/mep-player.js',
-                    'src/js/mep-feature-playpause.js',
-                    'src/js/mep-feature-stop.js',
-                    'src/js/mep-feature-progress.js',
-                    'src/js/mep-feature-time.js',
-                    'src/js/mep-feature-volume.js',
-                    'src/js/mep-feature-fullscreen.js',
-                    'src/js/mep-feature-tracks.js',
-                    'src/js/mep-feature-contextmenu.js',
-                    'src/js/mep-feature-speed.js',
-                    'src/js/mep-feature-postroll.js'
-                ],
-                dest: 'local-build/mediaelementplayer.js'
-            },
-            bundle: {
-                src: [
-                    'local-build/mediaelement.js',
-                    'local-build/mediaelementplayer.js'
-                ],
-                dest: 'local-build/mediaelement-and-player.js'
+                dest:'build/videoplayer.js'
             }
         },
         uglify: {
-            me: {
-                src    : ['local-build/mediaelement.js'],
-                dest   : 'local-build/mediaelement.min.js',
-                banner : 'src/js/me-header.js'
-            },
-            mep: {
-                src    : ['local-build/mediaelementplayer.js'],
-                dest   : 'local-build/mediaelementplayer.min.js',
-                banner : 'src/js/mep-header.js'
-            },
-            bundle: {
-                src  : ['local-build/mediaelement-and-player.js'],
-                dest : 'local-build/mediaelement-and-player.min.js'
+            videoplayer:{
+                src:['build/videoplayer.js'],
+                dest:'build/videoplayer.min.js',
+                banner:'src/js/vp_header.js'
             }
         },
         cssmin: {
             build: {
-                src  : ['src/css/mediaelementplayer.css'],
-                dest : 'local-build/mediaelementplayer.min.css'
+                src  : ['src/css/videoplayer.css'],
+                dest : 'build/css/videoplayer.min.css'
             }
         },
         copy: {
             build: {
                 expand  : true,
-                cwd     : 'src/css/',
-                src     : ['*.png', '*.svg', '*.gif', '*.css'],
-                dest    : 'local-build/',
+                cwd     : 'src/',
+                src     : ['font/*.*','images/*.*'],
+                dest    : 'build/',
                 flatten : true,
                 filter  : 'isFile'
             }

@@ -45,7 +45,10 @@ video{
 .yvp_container{position: relative;width: 100%;height: 100%;max-width: 100%;max-height: 100%;@include user-select(none);color: #eee;background-color: #000;font-family: sans-serif;font-size: 16px;overflow: hidden;
 div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
 }
-
+.yvp_container_hide{
+  .yvp_controls{bottom:-60px;}
+  .yvp_progress_status{bottom:0;}
+}
 .yvp_video{height: 100%;background-color: #000;color: #000;
     video{display: block;background-color: #000;color: #000;margin: 0;padding: 0;}
 }
@@ -54,6 +57,7 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
 .yvp_button_play{display: block;position: relative;display: inline-block;width: 32px;height: 44px;margin-top: 25px;margin-left: 35px;background:none;vertical-align: middle;font-size: 0;
     &::after{position: absolute;content: '';left: 0;width: 0;height: 0;overflow: hidden;border: 40px solid rgba(0,0,0,0); border-width: 22px 0 22px 32px; border-left-color: #fff;}
 }
+.yvp_membrane{position:absolute;width:100%;height:100%; top:0;left:0;background:rgba(0,0,0,0);}
 
 .yvp_controls{position: absolute;width: 100%;left: 0;bottom: 0;z-index: 5;@include transition(bottom .6s ease);}
 %backgroundOpacity{
@@ -108,7 +112,7 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
       .checkflag{display: block;}
     }
 }
-.yvp_progress_status{padding: 0;height: 4px;border-bottom: 1px solid #e0e0e0;position:absolute;bottom: 0;left: 0;width: 100%;z-index: 5;
+.yvp_progress_status{padding: 0;height: 4px;border-bottom: 1px solid #e0e0e0;position:absolute;bottom: -4px;left: 0;width: 100%;z-index: 5;
   .yvp_time_total{top: 0;height: 3px;}
 }
 .yvp_deadly_error{position: absolute;width: 100%;height: 100%;background:#595959; top: 0;left: 0;z-index: 7;text-align: center;vertical-align: middle;display: table;
