@@ -19,7 +19,7 @@
         root.videoPlayer = factory();
     }
 })(window, $, function() {
-    // body...
+// body...
 
     //video player manage
     var videoPlayer = function() {
@@ -104,7 +104,6 @@
             // })
         }
     });
-
     //get can play file type
     $.extend(Video.prototype, {
         videoType: ['video/mp4; codecs="avc1.42E01E"', 'video/ogg; codecs="theora"', 'video/webm; codecs="vp8, vorbis"'],
@@ -198,9 +197,6 @@
             this.controlsInit();
         }
     });
-
-
-
     //controls bar
     $.extend(Video.prototype, {
         _mouseOnControl: false,
@@ -297,7 +293,6 @@
             this._moveshow = 1;
         }
     });
-
     //play control
     $.extend(Video.prototype, {
         $_playbtn: '',
@@ -372,7 +367,6 @@
             icon.html('<em class="yvphicon yvphicon-pause"></em>');
         }
     });
-
     //next control
     $.extend(Video.prototype, {
         nextRender: function() {
@@ -390,7 +384,6 @@
 
         }
     });
-
     //fullScreen control
 
     $.extend(Video.prototype, {
@@ -464,7 +457,6 @@
         }()
 
     });
-
     //muted control
     $.extend(Video.prototype, {
         $_muted: '',
@@ -573,8 +565,7 @@
 
 
         }
-    })
-
+    });
     //progress control
     $.extend(Video.prototype, {
         $_progress: '',
@@ -713,39 +704,6 @@
             });
         }
     });
-
-    //continues play
-    $.extend(Video.prototype, {
-        $_continuePlay: '',
-        continueInit: function() {
-            this.$_continuePlay = this.$_progress.find('span[node-type="contp-lay"]');
-            this._continueEvents();
-        },
-        _continueEvents: function() {
-            var __ = this;
-            this.$_continuePlay.on('click', function() {
-                console.log('======= conplay')
-                var params = __.params;
-                params.continuousPlay = !params.continuousPlay;
-                __._continueControl();
-            });
-            __._continueControl()
-        },
-        _continueControl: function() {
-            if (this.params.continuousPlay) {
-                this._continueSelect()
-            } else {
-                this._continueUnSelect()
-            }
-        },
-        _continueSelect: function() {
-            this.$_continuePlay.addClass('yvp_contplay_check');
-        },
-        _continueUnSelect: function() {
-            this.$_continuePlay.removeClass('yvp_contplay_check');
-        }
-    });
-
     //error
     $.extend(Video.prototype, {
         $deadly: '',
@@ -788,7 +746,6 @@
             return errorTxt + '(' + video[0].error.code + ')';
         }
     });
-
     //mousemove class
     var $dcmen = $(document);
     var mouseMove = function(targetObj, callback) {
@@ -877,7 +834,6 @@
 
 
     });
-
     //fullscreen
     var $body = $("body"),
         $win = $(window);
@@ -945,7 +901,6 @@
 
         }
     });
-
     var videPlayerObj = new videoPlayer();
 
     return function(playerId, params) {

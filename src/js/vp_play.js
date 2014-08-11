@@ -1,4 +1,4 @@
-   //play control
+    //play control
     $.extend(Video.prototype, {
         $_playbtn: '',
         $_playFullBtn: '',
@@ -32,24 +32,25 @@
                 __._playChangeStatus();
             })
 
-            var playcontrol = function() {
-                if (video[0].paused) {
-                    video[0].play();
-                } else {
-                    video[0].pause();
-                }
-                // __._playChangeStatus();
-            };
             //trigger events
             this.$_playbtn.on('click', 'button', function() {
-                playcontrol();
+                __._play_on_off();
             })
             this.$_playFullBtn.on('click', function() {
-                playcontrol()
+                __._play_on_off();
             });
             this._playChangeStatus();
         },
-        play:function(){
+        _play_on_off: function() {
+            var __ = this,
+                video = __.$video;
+            if (video[0].paused) {
+                video[0].play();
+            } else {
+                video[0].pause();
+            }
+        },
+        play: function() {
             this.$video[0].play();
         },
         _playChangeStatus: function() {
@@ -61,8 +62,6 @@
                 this._play_puaseicon();
                 this.$_playFullBtn.hide();
             }
-
-
         },
         _play_playicon: function() {
             var icon = this.$_playbtn.find('.yvp_btn_val');

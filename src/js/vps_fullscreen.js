@@ -32,7 +32,6 @@
 
         },
         enterFullScreen: function() {
-            console.log(this.video.$video)
             this._insertMask();
             this.video.$el.appendTo(this.$warp)
             this._setWarpInfo()

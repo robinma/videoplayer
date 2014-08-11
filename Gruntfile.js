@@ -4,6 +4,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -21,12 +22,12 @@ module.exports = function(grunt) {
                     'src/js/vp_next.js',
                     'src/js/vp_fullscreen.js',
                     'src/js/vp_muted.js',
-                    'src?js/vp_progress.js',
-                    'src?js/vp_contunue.js',
-                    'src?js/vp_playerror.js',
-                    'src?js/vps_mousemove.js',
-                    'src?js/vps_fullscreen.js',
-                    'src?js/vp_end.js'
+                    'src/js/vp_progress.js',
+                    'src/js/vp_contunue.js',
+                    'src/js/vp_playerror.js',
+                    'src/js/vps_mousemove.js',
+                    'src/js/vps_fullscreen.js',
+                    'src/js/vp_end.js'
                 ],
                 dest:'build/videoplayer.js'
             }
@@ -48,15 +49,27 @@ module.exports = function(grunt) {
             build: {
                 expand  : true,
                 cwd     : 'src/',
-                src     : ['font/*.*','images/*.*'],
+                src     : ['*/*.*','!js/*.*','!scss/*.*','!css/*.*'],
                 dest    : 'build/',
-                flatten : true,
-                filter  : 'isFile'
+               // flatten : true,
+               filter  : 'isFile'
+            }
+        },
+        watch:{
+            css:{
+                files:['src/css/videoplayer.css'],
+                tasks:['cssmin']
+            },
+            js:{
+                files:['src/js/*.*'],
+                tasks:['concat', 'uglify', 'copy']
             }
         }
     });
 
 
     grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'copy']);
+    grunt.registerTask('watchfile', ['watch']);
+
 
 };

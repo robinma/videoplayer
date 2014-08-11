@@ -33,15 +33,29 @@
         },
         _videoControl: function() {
             var params = this.params;
-            var __=this;
+            var __ = this;
             if (params.autoPlay) {
                 this.$video[0].play();
             }
-            this.$video.on('error',function(){
-                __._deadlyError();
-            }).on('loadedmetadata',function(){
-                __.controlsInit();
-            });
+            //set is play value
+            this.$video.on('pause', function() {
+                __.isPlay = false;
+            }).on('play', function() {
+                __.isPlay = true;
+            }).on('ended', function() {
+                __.isPlay = false;
+            })
 
+            this.$video.on('error', function() {
+                __._deadlyError();
+                if ($.isFunction(params.error)) {
+                    params.error();
+                }
+            }).on('loadedmetadata', function() {
+                if ($.isFunction(params.success)) {
+                    params.success(__.$video[0], __.$el, __);
+                }
+            });
+            this.controlsInit();
         }
     });

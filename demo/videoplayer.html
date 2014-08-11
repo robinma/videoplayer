@@ -101,7 +101,18 @@
                     return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
                 }
             },
-            success:function(video,node,videoObj){
+            success:function(videoElement,node,videoObj){
+                console.log('----success ',arguments)
+                videoElement.addEventListener('timeupdate',function(){
+
+                },false);
+
+                videoObj.timeupdate(function(currentTime){
+
+                });
+            },
+            //fires when a problem is detected
+            error:function(){
 
             }
 
@@ -114,7 +125,7 @@
 
                 if(canplayType == 'mp4'){
                    
-                    return 'http://119.97.183.19/vlive.qqvideo.tc.qq.com/c001498g4qp.mp4?vkey=391FC63FCF2BB03B1CE5C447E96ADFB7A1305E177552034CB22476673791A8B22E621C58F92A70A476146A4F58A9AB1981F0D695C7230D88&br=60&platform=2&fmt=mp4&level=0&sdtfrom=v4010'
+                    return 'http://112.65.235.147/vlive.qqvideo.tc.qq.com/p0014a734vt.mp4?vkey=BFFFCE9709BA7C002F6E9F67ADC117E0D54AC17F46B808ED4F133FFA8B0309B9C438C7F0483A2AF1927DC9BDA2ED2210FDEBEB28ADD63392&br=60&platform=2&fmt=mp4&level=0&sdtfrom=v4010'
                 }
             },
             nextSource:function(canplayType){

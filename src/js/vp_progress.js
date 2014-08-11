@@ -20,7 +20,15 @@
                         </span>\
                     </div>\
                 </div>');
+
+            var minprogressObj = $('<span class="yvp_time_total">\
+                    <span class="yvp_time_loaded" node-type="buffer"></span>\
+                    <span class="yvp_time_current" node-type="progress-bar">\
+                    </span>\
+                </span>');
             this.$_control.append(progressObj);
+            this.$_minprogress.append(minprogressObj);
+
             this.$_progress = progressObj;
             this.$_progressBtn = progressObj.find('a[node-type="progpress-btn"]');
             this._progressControl();
@@ -72,14 +80,18 @@
         //updata buffer bar width
         _updataBufferProgress: function(start, end) {
             this.$_totalBuffer || (this.$_totalBuffer = this.$_progress.find('span[node-type="buffer"]'));
+            this.$_mintotalBuffer || (this.$_mintotalBuffer = this.$_minprogress.find('span[node-type="buffer"]'));
+
             var video = this.$video;
             var persent = end / video[0].duration * 100;
             this.$_totalBuffer.width(persent + '%');
+            this.$_mintotalBuffer.width(persent + '%');
         },
         //updata current play probress bar width
         _updataPlayProgress: function() {
             this.$_playProgress || (this.$_playProgress = this.$_progress.find('span[node-type="progress-bar"]'));
             this.$_progRailObj || (this.$_progRailObj = this.$_progress.find('span[node-node="prog-rail"]'));
+            this.$_minPlayProgress || (this.$_minPlayProgress = this.$_minprogress.find('span[node-type="progress-bar"]'));
 
             var video = this.$video;
             var persent = video[0].currentTime / video[0].duration;
@@ -87,6 +99,7 @@
             this.$_progressBtn.css({
                 left: persent * 100 + '%'
             });
+            this.$_minPlayProgress.width(persent * 100 + '%');
         },
         //control progress button
         _progressBtnControl: function(lx, ly, oldLT) {
@@ -108,5 +121,18 @@
             this._updataCurrentTime(this._formateTime(currtime));
             this._updataPlayProgress();
 
+        },
+        //exports method
+        timeupdate: function(fn) {
+            var __ = this,
+                video = __.$video;
+            var currtime;
+            video.on('timeupdate', function() {
+                currtime = video[0].currentTime;
+                if (currtime - (currtime | 0) > 0.8) {
+                    $.isFunction(fn)
+                    fn((currtime | 0));
+                }
+            });
         }
     });
