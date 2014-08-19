@@ -25,5 +25,94 @@ at fire,you have to include js file and style sheet.
      <link rel="stylesheet" href="../src/css/videoplayer.css">
      <script type="text/javascript" src="../src/js/videoplayer.js"></script>
      
+##2.2 init to do##
+
+    /**
+     * param {String} videoSelector,is a dom id or jquery selector
+     * param {Data} params.it set videoplayer params and some events
+     */
+    var videoplayer = videoPlayer(videoSelector,params);
+    
+**demo**
+
+    var videoplayer2=videoPlayer('mod_player2',{
+            autoPlay:false,
+            muted:true,
+            setSource:function(canplayType){
+                
+                if(canplayType == 'mp4'){
+                    return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
+                }
+            },
+            success:function(videoElement,node,videoObj){
+                console.log('----success ',arguments)
+                videoElement.addEventListener('timeupdate',function(){
+				//when timeupdata event to do ...
+                },false);
+
+                videoObj.timeupdate(function(currentTime){
+				//when video play to do, speed is 1s
+                });
+            },
+            //fires when a problem is detected
+            error:function(){
+
+            }
+
+        });
+##params##
+
+###autoplay###
+*autoplay {boolean}：是否自动播放*
+
+        var videoplayer2=videoPlayer('mod_player2',{
+            //....
+            autoPlay:false,
+            //...
+        });
+        
+###muted###
+
+*muted {boolean}:默认是否静音*
+
+
+    var videoplayer2=videoPlayer('mod_player2',{
+            //....
+            muted:true,
+            //...
+        });
+
+###setSource###
+*setSource {function}:设置视频源地址*
+
+    var videoplayer2=videoPlayer('mod_player2',{
+            setSource:function(canplayType){
+                //canplayType : mp4 ogg webm                if(canplayType == 'mp4'){
+                    return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
+                }
+            }            
+        });
+###success###
+*success {function}:播放成功时执行*
+
+       var videoplayer2=videoPlayer('mod_player2',{
+            success:function(videoElement,node,videoObj){
+                /**
+                 *params videoElement {domObj} is video dom object
+                 *params videoObj {videoPlayerObject} is videoPlayer object
+                 */
+                videoElement.addEventListener('timeupdate',function(){
+				//when timeupdata event to do ...
+                },false);
+
+                videoObj.timeupdate(function(currentTime){
+				//when video play to do, speed is 1s
+                });
+            },
+        });
+        
+
+##API##
+
 
 
