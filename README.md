@@ -1,4 +1,4 @@
-videoplayer
+videoplayer（**[demo view](http://htmlpreview.github.io/?https://github.com/robinma/videoplayer/blob/master/demo/videoplayer.html)**）
 ===========
 
 
@@ -119,7 +119,7 @@ at fire,you have to include js file and style sheet.
 
 ######
 
-#下面是video标签的属性，方法 和事件，#
+#下面是video标签的属性，方法 和事件#
 
 ##<video>标签的属性##
 ----
