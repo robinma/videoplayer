@@ -62,12 +62,21 @@ at fire,you have to include js file and style sheet.
         });
 ##params##
 
-###autoplay###
-*autoplay {boolean ::false}：是否自动播放*
+###width###
+*width {Number ::853}：播放器默认宽度*
 
         var videoplayer2=videoPlayer('mod_player2',{
             //....
-            autoPlay:false,
+            width:853,
+            //...
+        });
+
+###height###
+*height {Number ::480}：播放器默认高度*
+
+        var videoplayer2=videoPlayer('mod_player2',{
+            //....
+            height:480,
             //...
         });
         
