@@ -50,8 +50,13 @@
                 video[0].pause();
             }
         },
+        //播放
         play: function() {
             this.$video[0].play();
+        },
+        //暂停
+        pause:function(){
+            this.$video[0].pause();
         },
         _playChangeStatus: function() {
             var video = this.$video;

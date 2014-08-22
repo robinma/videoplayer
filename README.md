@@ -4,7 +4,7 @@ videoplayer（**[demo view](http://htmlpreview.github.io/?https://github.com/rob
 
 #一 简介#
 ------
-此组件，主要是实现html5 video player 视频播放功能，主要实再了视频的通常的播放控制功能。
+此组件，主要是实现html5 video player 视频播放功能，主要实再现了视频的通常的播放控制功能。
 ##1.1 主要功能##
 - 播放暂停功能
 - 进度条控制及拖放
@@ -63,7 +63,7 @@ at fire,you have to include js file and style sheet.
 ##params##
 
 ###autoplay###
-*autoplay {boolean}：是否自动播放*
+*autoplay {boolean ::false}：是否自动播放*
 
         var videoplayer2=videoPlayer('mod_player2',{
             //....
@@ -73,7 +73,7 @@ at fire,you have to include js file and style sheet.
         
 ###muted###
 
-*muted {boolean}:默认是否静音*
+*muted {boolean :: false}:默认是否静音*
 
 
     var videoplayer2=videoPlayer('mod_player2',{
@@ -110,13 +110,62 @@ at fire,you have to include js file and style sheet.
                 });
             },
         });
-        
+###canfast###
+*canfast {boolean ::false}:是否可以快进*
 
+    var videoplayer2=videoPlayer('mod_player2',{
+            //....
+            canfast:true,
+            //...
+        }); 
+###virtualFullScreen###
+*virtualFullScreen｛boolean ::true｝ 是否虚拟全屏*
+
+    var videoplayer=videoPlayer('mod_player',{
+
+       virtualFullScreen:true,
+
+    });
+
+
+
+------
+------
 ##API##
 
+###videoplyer 方法###
+
+***play()  播放视频***
+
+    var videoplayer = photofigure(imgdata,2);
+	videoplayer.play();
+	//or
+    var videoplayer2=videoPlayer('mod_player2',{
+        success:function(videoElement,node,videoObj){
+			//use play method
+            videoObj.play();
+			//user video Element default method
+			videoElement.play();
+        },
+    });
+	
+***pause() 暂停视频***
+
+
+    var videoplayer = photofigure(imgdata,2);
+	videoplayer.pause();
+	//or
+    var videoplayer2=videoPlayer('mod_player2',{
+        success:function(videoElement,node,videoObj){
+			//use pause method
+            videoObj.pause();
+			//user video Element default method
+			videoElement.pause();
+        },
+    });
+
+
 >待整理。。。
-
-
 ######
 
 #下面是video标签的属性，方法 和事件#

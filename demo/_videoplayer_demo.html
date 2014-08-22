@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>videoPlayer demo1</title>
+    <link rel="stylesheet" href="../src/css/videoplayer.css">
+    <script type="text/javascript" src="http://www.21boya.cn/dianping/www/js/2013/lib/jquery-1.7.min.js?v=201407181929"></script>
+</head>
+<body>
+    <div class="mod-yivideo-warp" id="mod_player">
+
+       <div class="yvp_container">
+            <div class="yvp_video">
+                <video width="100%" height="100%" _preload="none"  x-webkit-airplay="true" src="http://mediaelementjs.com/media/echo-hereweare.mp4"></video>
+            </div>
+            <div class="yvp_overlay_play">
+                <span class="yvp_button_play"></span>
+            </div>
+            <div class="yvp_controls">
+                <div class="yvp_button yvp_play_pause">
+                    <button type="button" title="播放/暂停">
+                        <span class="yvp_btn_val">
+                            <em class="yvphicon yvphicon-play"></em>
+                        </span>
+                    </button>
+                </div>
+                <div class="yvp_button yvp_next">
+                    <button type="button" title="next">
+                        <span class="yvp_btn_val">
+                            <em class="yvphicon yvphicon-next"></em>
+                        </span>
+                    </button>
+                </div>
+                <div class="yvp_button yvp_fullscreen">
+                    <button type="button" title="full_screen">
+                        <span class="yvp_btn_val">
+                            <em class="yvphicon yvphicon-fullscreen"></em>
+                        </span>
+                    </button>
+                </div>
+                <div class="yvp_button yvp_muted yvp_muted_over">
+                    <div class="yvp_button_under">
+                    </div>
+                    <div class="yvp_muted_warp">
+                            <div class="muted_barwarp">
+                                <div class="muted_arrow_b">
+                                    <span class="yvp_muted_tbg"></span>
+                                </div>
+                                <div class="muted_arrow_b muted_arrow_u">
+                                    <span class="yvp_muted_tbg"></span>
+                                </div>
+                                <a href="javascript:;" class="muted_ribtn"></a>
+                            </div>
+                        </div>
+                    <button type="button" title="muted">
+                        <span class="yvp_btn_val">
+                            <em class="yvphicon yvphicon-muted"></em>
+                        </span>
+                    </button>
+                </div>
+                <div class="yvp_prograss_wrap">
+                    <div class="yvp_progress">
+                        <span class="yvp_time_panel yvp_time_panel_curr">02:12</span>
+                        <span class="yvp_time_panel yvp_time_panel_total">05:28</span>
+                        <span class="yvp_time_total">
+                            <span class="yvp_time_loaded" style='width:85%'></span>
+                            <span class="yvp_time_current" style='width:60%'>
+                                <span class="yvp_time_handle"></span>
+                            </span>
+                        </span>
+                        <span class="yvp_contplay yvp_contplay_check">
+                            <span class="yvp_icon checkbox"></span>
+                            <span class="yvp_icon checkflag"></span>
+                            <b>连播</b>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="yvp_progress yvp_progress_status"></div>
+            <div class="yvp_deadly_error">
+                <div class="yvp_deadly_errtxt">
+                    <span class="yvphicon yvphicon-unhappy"></span>
+                    <span class="yvp_deadly_tip">我也不知什么原因中断了，网速不好？</span>
+                </div>
+            </div>
+       </div>
+    </div>
+
+<!--     <div class="fvp_fullscreen">
+
+    </div> -->
+    <div class="mod-yivideo-warp" id="mod_player2"></div>
+    <script type="text/javascript" src="../src/js/videoplayer.js"></script>
+    <script type="text/javascript">
+        var videoplayer2=videoPlayer('mod_player2',{
+            autoPlay:false,
+            muted:true,
+            setSource:function(canplayType){
+                
+                if(canplayType == 'mp4'){
+                    return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
+                }
+            },
+            success:function(videoElement,node,videoObj){
+                videoElement.addEventListener('timeupdate',function(){
+
+                },false);
+
+                videoObj.timeupdate(function(currentTime){
+
+                });
+            },
+            //fires when a problem is detected
+            error:function(){
+
+            }
+
+        });
+
+        var videoplayer=videoPlayer('mod_player',{
+            continuousPlay:true,
+           // virtualFullScreen:false,
+            setSource:function(canplayType){
+
+                if(canplayType == 'mp4'){
+                   
+                    return 'http://112.65.235.147/vlive.qqvideo.tc.qq.com/p0014a734vt.mp4?vkey=BFFFCE9709BA7C002F6E9F67ADC117E0D54AC17F46B808ED4F133FFA8B0309B9C438C7F0483A2AF1927DC9BDA2ED2210FDEBEB28ADD63392&br=60&platform=2&fmt=mp4&level=0&sdtfrom=v4010'
+                }
+            },
+            nextSource:function(canplayType){
+
+            },
+            success:function(video,node,videoObj){
+
+            }
+
+        });
+
+    </script>
+</body>
+</html>

@@ -12,7 +12,8 @@
                 virtualFullScreen: true,
                 muted: false,
                 width: 853,
-                height: 480
+                height: 480,
+                canfast:false
             }, params);
             this.init();
         }

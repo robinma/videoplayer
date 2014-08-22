@@ -54,7 +54,8 @@
                 virtualFullScreen: true,
                 muted: false,
                 width: 853,
-                height: 480
+                height: 480,
+                canfast:false
             }, params);
             this.init();
         }
@@ -195,6 +196,38 @@
                 }
             });
             this.controlsInit();
+        }
+    });
+    //连播功能
+    //continues play
+    $.extend(Video.prototype, {
+        $_continuePlay: '',
+        continueInit: function() {
+            this.$_continuePlay = this.$_progress.find('span[node-type="contp-lay"]');
+            this._continueEvents();
+        },
+        _continueEvents: function() {
+            var __ = this;
+            this.$_continuePlay.on('click', function() {
+                console.log('======= conplay')
+                var params = __.params;
+                params.continuousPlay = !params.continuousPlay;
+                __._continueControl();
+            });
+            __._continueControl()
+        },
+        _continueControl: function() {
+            if (this.params.continuousPlay) {
+                this._continueSelect()
+            } else {
+                this._continueUnSelect()
+            }
+        },
+        _continueSelect: function() {
+            this.$_continuePlay.addClass('yvp_contplay_check');
+        },
+        _continueUnSelect: function() {
+            this.$_continuePlay.removeClass('yvp_contplay_check');
         }
     });
     //controls bar
@@ -345,8 +378,13 @@
                 video[0].pause();
             }
         },
+        //播放
         play: function() {
             this.$video[0].play();
+        },
+        //暂停
+        pause:function(){
+            this.$video[0].pause();
         },
         _playChangeStatus: function() {
             var video = this.$video;
@@ -679,11 +717,12 @@
 
             if (newLeft < 0) newLeft = 0;
             if (newLeft > totalWidth) newLeft = totalWidth;
-            proBtn.css({
-                left: newLeft
-            });
             var currtime = newLeft / totalWidth * video[0].duration;
-            //video[0].pause();
+
+            //can fast
+            if(this.params.canfast === false){
+                if(currtime > video[0].currentTime) return false;
+            }
             video[0].currentTime = currtime;
 
             this._updataCurrentTime(this._formateTime(currtime));

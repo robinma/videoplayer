@@ -111,11 +111,12 @@
 
             if (newLeft < 0) newLeft = 0;
             if (newLeft > totalWidth) newLeft = totalWidth;
-            proBtn.css({
-                left: newLeft
-            });
             var currtime = newLeft / totalWidth * video[0].duration;
-            //video[0].pause();
+
+            //can fast
+            if(this.params.canfast === false){
+                if(currtime > video[0].currentTime) return false;
+            }
             video[0].currentTime = currtime;
 
             this._updataCurrentTime(this._formateTime(currtime));
