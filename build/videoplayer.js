@@ -440,30 +440,35 @@
             this.$_fullscreen = fullScreenObj;
             this._fullScreenControl()
         },
+        _fullScreenObj:'',
         _fullScreenControl: function() {
             var __ = this;
             var params = this.params;
 
-            var fullScreen = new virtualFullScreen(__);
+            this._fullScreenObj = new virtualFullScreen(__);
 
             this.$_fullscreen.on('click', 'button', function() {
                 if (params.virtualFullScreen) {
-                    __._isFullScreen = !__._isFullScreen;
-                    if (__._isFullScreen) {
-                        fullScreen.enterFullScreen();
-                        __._fullscreen_nfullicon();
+                    if (!__._isFullScreen) {
+                        __.fullScreen();
                     } else {
-                        fullScreen.cancelFullScreen()
-                        __._fullscreen_fullicon();
+                        __.unFullScreen();
                     }
-
                 } else {
                     //default fullscreen
                     __._fullscreen_defaultFull();
                 }
             });
-
-
+        },
+        fullScreen:function(){
+            this._fullScreenObj.enterFullScreen();
+            this._fullscreen_nfullicon();
+            this._isFullScreen = true;
+        },
+        unFullScreen:function(){
+            this._fullScreenObj.cancelFullScreen()
+            this._fullscreen_fullicon();
+            this._isFullScreen = false;
         },
         _fullscreen_nfullicon: function() {
             var __ = this;
@@ -734,15 +739,27 @@
             var __ = this,
                 video = __.$video;
             var currtime;
+            var tdonce = todoOnce();
             video.on('timeupdate', function() {
                 currtime = video[0].currentTime;
-                if (currtime - (currtime | 0) > 0.8) {
+                tdonce(currtime,function(){
                     $.isFunction(fn)
                     fn((currtime | 0));
-                }
+                });
             });
         }
     });
+    
+    var todoOnce =function(){
+        var currTime='';
+        return function(number,fn){
+            var ct = number | 0;
+            if(ct != currTime){
+                fn && fn(ct);
+                currTime = ct;
+            }
+        };
+    };
     //error
     $.extend(Video.prototype, {
         $deadly: '',
@@ -910,7 +927,8 @@
             this._insertMask();
             this.video.$el.appendTo(this.$warp)
             this._setWarpInfo()
-            this.video.play();
+            //当放大时，会自动暂停
+           // this.video.play();
             this.events()
 
         },

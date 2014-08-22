@@ -35,7 +35,8 @@
             this._insertMask();
             this.video.$el.appendTo(this.$warp)
             this._setWarpInfo()
-            this.video.play();
+            //当放大时，会自动暂停
+           // this.video.play();
             this.events()
 
         },

@@ -128,12 +128,24 @@
             var __ = this,
                 video = __.$video;
             var currtime;
+            var tdonce = todoOnce();
             video.on('timeupdate', function() {
                 currtime = video[0].currentTime;
-                if (currtime - (currtime | 0) > 0.8) {
+                tdonce(currtime,function(){
                     $.isFunction(fn)
                     fn((currtime | 0));
-                }
+                });
             });
         }
     });
+    
+    var todoOnce =function(){
+        var currTime='';
+        return function(number,fn){
+            var ct = number | 0;
+            if(ct != currTime){
+                fn && fn(ct);
+                currTime = ct;
+            }
+        };
+    };

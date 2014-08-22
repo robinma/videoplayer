@@ -16,30 +16,35 @@
             this.$_fullscreen = fullScreenObj;
             this._fullScreenControl()
         },
+        _fullScreenObj:'',
         _fullScreenControl: function() {
             var __ = this;
             var params = this.params;
 
-            var fullScreen = new virtualFullScreen(__);
+            this._fullScreenObj = new virtualFullScreen(__);
 
             this.$_fullscreen.on('click', 'button', function() {
                 if (params.virtualFullScreen) {
-                    __._isFullScreen = !__._isFullScreen;
-                    if (__._isFullScreen) {
-                        fullScreen.enterFullScreen();
-                        __._fullscreen_nfullicon();
+                    if (!__._isFullScreen) {
+                        __.fullScreen();
                     } else {
-                        fullScreen.cancelFullScreen()
-                        __._fullscreen_fullicon();
+                        __.unFullScreen();
                     }
-
                 } else {
                     //default fullscreen
                     __._fullscreen_defaultFull();
                 }
             });
-
-
+        },
+        fullScreen:function(){
+            this._fullScreenObj.enterFullScreen();
+            this._fullscreen_nfullicon();
+            this._isFullScreen = true;
+        },
+        unFullScreen:function(){
+            this._fullScreenObj.cancelFullScreen()
+            this._fullscreen_fullicon();
+            this._isFullScreen = false;
         },
         _fullscreen_nfullicon: function() {
             var __ = this;

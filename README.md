@@ -163,7 +163,31 @@ at fire,you have to include js file and style sheet.
 			videoElement.pause();
         },
     });
+***fullScreen() 进入全屏模式***
 
+    var videoplayer = photofigure(imgdata,2);
+	videoplayer.fullScreen();
+	//or
+    var videoplayer2=videoPlayer('mod_player2',{
+        success:function(videoElement,node,videoObj){
+
+			//use fullScreen method
+            videoObj.fullScreen();
+
+        },
+    });
+
+***unFullScreen() 退出全屏模式***
+
+    var videoplayer = photofigure(imgdata,2);
+	videoplayer.unFullScreen();
+	//or
+    var videoplayer2=videoPlayer('mod_player2',{
+        success:function(videoElement,node,videoObj){
+			//use unFullScreen method
+            videoObj.unFullScreen();
+        },
+    });
 
 >待整理。。。
 ######

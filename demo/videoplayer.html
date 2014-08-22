@@ -27,7 +27,10 @@
 
             },
             success:function(video,node,videoObj){
-
+               // videoObj.fullScreen();
+               videoObj.timeupdate(function(currentTime){
+                    console.log(currentTime)
+                }); 
             }
 
         });
@@ -48,8 +51,8 @@
                 },false);
 
                 videoObj.timeupdate(function(currentTime){
-
-                });
+                   // console.log(currentTime)
+                }); 
 
             },
             //fires when a problem is detected
