@@ -9,7 +9,6 @@
         _continueEvents: function() {
             var __ = this;
             this.$_continuePlay.on('click', function() {
-                console.log('======= conplay')
                 var params = __.params;
                 params.continuousPlay = !params.continuousPlay;
                 __._continueControl();
@@ -28,5 +27,8 @@
         },
         _continueUnSelect: function() {
             this.$_continuePlay.removeClass('yvp_contplay_check');
+        },
+        getContiune : function(){
+            return this.params.continuousPlay;
         }
     });

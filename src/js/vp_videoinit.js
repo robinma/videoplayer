@@ -18,7 +18,7 @@
             this.init();
         }
         //init video
-    $.extend(Video.prototype, {}, {
+    $.extend(Video.prototype, pubsub, {
         init: function() {
             this.render();
             this.renderSource();

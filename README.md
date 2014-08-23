@@ -188,7 +188,7 @@ at fire,you have to include js file and style sheet.
 
 ***unFullScreen() 退出全屏模式***
 
-    var videoplayer = photofigure(imgdata,2);
+  var videoplayer = photofigure(imgdata,2);
 	videoplayer.unFullScreen();
 	//or
     var videoplayer2=videoPlayer('mod_player2',{
@@ -197,6 +197,23 @@ at fire,you have to include js file and style sheet.
             videoObj.unFullScreen();
         },
     });
+
+***setCurrentTime(newTime) 设置当前播放点,单位：秒***
+
+  var videoplayer = photofigure(imgdata,2);
+  videoplayer.setCurrentTime(23);
+  //or
+    var videoplayer2=videoPlayer('mod_player2',{
+        success:function(videoElement,node,videoObj){
+          //use video element set currentTime
+          videoElement.currentTime=23
+          //or
+          //set currentTime
+          videoObj.setCurrentTime(23);
+        },
+    });
+
+***getContiune() {boolean} 获取是否可以连续的值***
 
 >待整理。。。
 ######

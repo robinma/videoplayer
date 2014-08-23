@@ -136,6 +136,11 @@
                     fn((currtime | 0));
                 });
             });
+        },
+        //set currentTime
+        setCurrentTime:function(time){
+            if(time < 0 || time > this.$video[0].duration) return;
+            this.$video[0].currentTime = time;
         }
     });
     
