@@ -13,6 +13,7 @@ module.exports = function(grunt) {
                 src:[
                     'src/js/vp_header.js',
                     'src/js/vp_exports.js',
+                    'src/js/vps_pubsub.js',
                     'src/js/vp_videoplayer.js',
                     'src/js/vp_videoinit.js',
                     'src/js/vp_canplaytype.js',
@@ -25,7 +26,6 @@ module.exports = function(grunt) {
                     'src/js/vp_muted.js',
                     'src/js/vp_progress.js',
                     'src/js/vp_playerror.js',
-                    'src/js/vps_pubsub.js',
                     'src/js/vps_mousemove.js',
                     'src/js/vps_fullscreen.js',
                     'src/js/vp_end.js'

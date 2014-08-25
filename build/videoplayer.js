@@ -19,6 +19,30 @@
         root.videoPlayer = factory();
     }
 })(window, $, function() {
+  //pubsub events
+  var pubsub = {
+      _handlers: '',
+      on: function(etype, handler) {
+        if (typeof this._handlers !== 'object') {
+          this._handlers = [];
+        }
+        if (!this._handlers[etype]) {
+          this._handlers[etype] = []
+        }
+        if (typeof handler === 'function') {
+          this._handlers[etype].push(handler)
+        }
+        return this;
+      },
+      emit: function(etype) {
+        var args = Array.prototype.slice.call(arguments, 1)
+        var handlers = this._handlers[etype] || [];
+        for (var i = 0, l = handlers.length; i < l; i++) {
+          handlers[i].apply(null, args)
+        }
+        return this;
+      }
+    }
 // body...
 
     //video player manage
@@ -60,7 +84,7 @@
             this.init();
         }
         //init video
-    $.extend(Video.prototype, {}, {
+    $.extend(Video.prototype, pubsub, {
         init: function() {
             this.render();
             this.renderSource();
@@ -209,10 +233,11 @@
         _continueEvents: function() {
             var __ = this;
             this.$_continuePlay.on('click', function() {
-                console.log('======= conplay')
                 var params = __.params;
                 params.continuousPlay = !params.continuousPlay;
                 __._continueControl();
+                //define event
+                __.emit('continue',params.continuousPlay);
             });
             __._continueControl()
         },
@@ -228,6 +253,9 @@
         },
         _continueUnSelect: function() {
             this.$_continuePlay.removeClass('yvp_contplay_check');
+        },
+        getContiune : function(){
+            return this.params.continuousPlay;
         }
     });
     //controls bar
@@ -407,6 +435,7 @@
     });
     //next control
     $.extend(Video.prototype, {
+        $_nextobj:'',
         nextRender: function() {
             var nextObj = $('<div class="yvp_button yvp_next">\
                     <div class="yvp_button_under"></div>\
@@ -416,10 +445,16 @@
                         </span>\
                     </button>\
                 </div>');
+
             this.$_control.append(nextObj);
+            this.$_nextobj = nextObj;
+            this._nextControl();
         },
         _nextControl: function() {
-
+            var __=this;
+            this.$_nextobj.on('click touchStart',function(){
+                __.emit('next');
+            });
         }
     });
     //fullScreen control
@@ -747,6 +782,11 @@
                     fn((currtime | 0));
                 });
             });
+        },
+        //set currentTime
+        setCurrentTime:function(time){
+            if(time < 0 || time > this.$video[0].duration) return;
+            this.$video[0].currentTime = time;
         }
     });
     

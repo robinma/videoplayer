@@ -12,6 +12,8 @@
                 var params = __.params;
                 params.continuousPlay = !params.continuousPlay;
                 __._continueControl();
+                //define event
+                __.emit('continue',params.continuousPlay);
             });
             __._continueControl()
         },
