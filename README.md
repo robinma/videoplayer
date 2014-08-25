@@ -237,9 +237,9 @@ at fire,you have to include js file and style sheet.
 ######
 
 
-##videoPlayer Events标签的属性##
+##videoPlayer Events事件方法##
 
-***videoObj.on('next') 当点击next时，触发***
+***videoObj.on('next',function) 当点击next时，触发***
 
     var videoplayer = photofigure(imgdata,2);
 	videoplayer.on('next',function(){
@@ -255,7 +255,7 @@ at fire,you have to include js file and style sheet.
         },
     });
 
-***videoObj.on('continue') 当点击连播时，触发***
+***videoObj.on('continue',function) 当点击连播时，触发***
 
     var videoplayer = photofigure(imgdata,2);
 	videoplayer.on('continue',function(currentStatus){
