@@ -164,7 +164,9 @@
   height: 100%;
   top: 0;
   left: 0;
-  background: transparent; }
+  background: #fff;
+  opacity: 0;
+  filter: alpha(opacity=0); }
 
 .yvp_controls {
   position: absolute;
@@ -301,8 +303,6 @@
 
 .yvp_prograss_wrap {
   height: 3.75em;
-  margin-left: 9.5em;
-  margin-right: 6.75em;
   overflow: hidden;
   padding-top: 1.125em; }
 
