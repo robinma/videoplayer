@@ -118,7 +118,8 @@
     background-color: #000;
     color: #000;
     margin: 0;
-    padding: 0; }
+    padding: 0;
+    display: block; }
 
 .yvp_overlay_play {
   position: absolute;

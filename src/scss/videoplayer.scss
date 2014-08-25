@@ -50,7 +50,7 @@ div,p,a,span,em,strong,li,ul{@include prefixer(box-sizing,border-box);}
   .yvp_progress_status{bottom:0;}
 }
 .yvp_video{height: 100%;background-color: #000;color: #000;
-    video{display: block;background-color: #000;color: #000;margin: 0;padding: 0;}
+    video{display: block;background-color: #000;color: #000;margin: 0;padding: 0;display: block;}
 }
 
 .yvp_overlay_play{position: absolute;left: 50%;top: 50%;width: 94px;height: 94px;margin-left: -47px;margin-top: -47px;line-height: 3;padding:0;background-color: rgba(0,0,0,0.32);border-radius: 94px;border:1px solid rgba(255,255,255,0.15);display: none;}
