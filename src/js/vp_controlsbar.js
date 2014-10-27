@@ -39,7 +39,7 @@
         controlEvents: function() {
             var video = this.$video;
             var __ = this;
-            this.$_membrane.on('click', function() {
+            this.$_membrane.on('click', function() { 
                 __._play_on_off();
             }).on('mousemove', function() {
                 __._controlBar_moveshow();
@@ -62,6 +62,8 @@
             });
         },
         _controlBar_show: function() {
+            //如果暂停时参数为true,则不显示
+            if(this._hideConbar)return;
             this.$el.removeClass('yvp_container_hide');
         },
         _controlBar_hide: function() {

@@ -144,7 +144,8 @@ at fire,you have to include js file and style sheet.
 
 ###videoplyer 方法###
 
-***play()  播放视频***
+***play([showControllBar])  播放视频***
+> @showControllBar [boolean :false] 是否显示控制板，默认为false,主要配合pause使用。
 
     var videoplayer = photofigure(imgdata,2);
 	videoplayer.play();
@@ -158,7 +159,8 @@ at fire,you have to include js file and style sheet.
         },
     });
 	
-***pause() 暂停视频***
+***pause([hideControllBar]) 暂停视频***
+>@hideControllBar [boolean:false] 是否隐藏控制面板，默认为false,不隐藏。
 
 
     var videoplayer = photofigure(imgdata,2);

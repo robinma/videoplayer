@@ -43,7 +43,9 @@
         },
         _play_on_off: function() {
             var __ = this,
-                video = __.$video;
+                video = __.$video; 
+            //如果暂停时参数为true,则不显示
+            if(__._hideConbar)return;  
             if (video[0].paused) {
                 video[0].play();
             } else {
@@ -51,17 +53,29 @@
             }
         },
         //播放
-        play: function() {
+        play: function(showConBar) {
+            if(typeof showConBar === 'boolean' && showConBar){
+                this._hideConbar = false;
+            }
             this.$video[0].play();
         },
         //暂停
-        pause:function(){
+        pause:function(hideConBar){
+
+            if(typeof hideConBar === 'boolean' && hideConBar){
+                this._hideConbar = true;
+                this._controlBar_hide();
+            }else{
+                this._hideConbar = false;
+            }
             this.$video[0].pause();
         },
         _playChangeStatus: function() {
             var video = this.$video;
             if (video[0].paused) {
                 this._play_playicon();
+                //如果暂停时参数为true,则不显示
+                if(this._hideConbar)return; 
                 this.$_playFullBtn.show();
             } else {
                 this._play_puaseicon();
