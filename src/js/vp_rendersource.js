@@ -27,7 +27,9 @@
         },
         //render video element and set $video oubject
         _renderVideo: function(src) {
-            var video = $('<div class="yvp_video"><video width="100%" height="100%" _preload="none" x-webkit-airplay="true" src="${videosrc}"></video></div>'.replace(/\${.*\}/i, src));
+            var params = this.params;
+            var virtualFullScreen = params.virtualFullScreen;
+            var video = $(('<div class="yvp_video"><video width="100%" height="100%" _preload="none" x-webkit-airplay="true" src="${videosrc}" ' + (virtualFullScreen? 'webkit-playsinline':'') + '></video></div>').replace(/\${.*\}/i, src));
             this.$el.append(video);
             this.$video = video.find('video');
         },

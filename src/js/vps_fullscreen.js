@@ -1,3 +1,4 @@
+// webkit-playsinline
     //fullscreen
     var $body = $("body"),
         $win = $(window);
