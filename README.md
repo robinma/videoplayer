@@ -40,8 +40,11 @@ at fire,you have to include js file and style sheet.
             muted:true,
             setSource:function(canplayType){
                 
-                if(canplayType == 'mp4'){
-                    return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
+                //if(canplayType == 'mp4'){
+                //    return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
+                //}
+                if (canplayTypes.indexOf('m3u8') >= 0) {
+                    return 'http://play.ergeyy.com/vedios/stream/xiaopingguo.m3u8'
                 }
             },
             success:function(videoElement,node,videoObj){
@@ -92,15 +95,19 @@ at fire,you have to include js file and style sheet.
         });
 
 ###setSource###
-*setSource {function}:设置视频源地址*
+    *setSource {function}:设置视频源地址*
 
-    var videoplayer2=videoPlayer('mod_player2',{
-            setSource:function(canplayType){
-                //canplayType : mp4 ogg webm                if(canplayType == 'mp4'){
-                    return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
-                }
-            }            
-        });
+        var videoplayer2=videoPlayer('mod_player2',{
+                setSource:function(canplayType){
+                    //canplayType : ['mp4', 'ogg', 'webm']
+                    if (canplayTypes.indexOf('m3u8') >= 0) {
+                        return 'http://play.ergeyy.com/vedios/stream/xiaopingguo.m3u8'
+                    }
+                    //if(canplayType == 'mp4'){
+                    //    return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
+                    //}
+                }            
+            });
 ###success###
 *success {function}:播放成功时执行*
 

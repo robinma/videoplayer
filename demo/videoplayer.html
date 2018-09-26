@@ -2,25 +2,34 @@
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <title>videoPlayer demo1</title>
     <link rel="stylesheet" href="../src/css/videoplayer.css">
     <script type="text/javascript" src="http://www.21boya.cn/dianping/www/js/2013/lib/jquery-1.7.min.js?v=201407181929"></script>
 </head>
 <body>
-    <div class="mod-yivideo-warp" id="mod_player"></div>
-
-    <div class="mod-yivideo-warp" id="mod_player2"></div>
+    <div class="mod-yivideo-warp" style="width: 100%;" id="mod_player"></div>
+    -----
+    <div class="mod-yivideo-warp" style="width: 100%;"  id="mod_player2"></div>
     <script type="text/javascript" src="../build/videoplayer.min.js"></script>
     <script type="text/javascript">
         var videoplayer=videoPlayer('mod_player',{
             continuousPlay:true,
+            autoPlay:true,
             canfast:true,
+            width: '100%',
            // virtualFullScreen:false,
-            setSource:function(canplayType){
+            setSource:function(canplayTypes){
 
-                if(canplayType == 'mp4'){
-                    return 'http://119.188.75.174/fcs121.56.com/flvdownload/18/0/sc_138509195867hd.flv.mp4?t=i9vad6UFK85cigYUUlJ8uQ&r=41641&e=1408764377&v=1&s=1&tt=60&sz=2323255&vid=101149280'
+                // if(canplayType == 'mp4'){
+                //     return 'http://play.ergeyy.com/vedios/stream/xiaopingguo.m3u8'
+                // }
+                console.log(canplayTypes);
+                http://play.ergeyy.com/vedios/3_39_1534778334001_1.mp4
+                if (canplayTypes.indexOf('mp4') >= 0) {
+                    return 'http://play.ergeyy.com/vedios/3_39_1534778334001_1.mp4'
                 }
+                return 'http://play.ergeyy.com/vedios/3_39_1534778334001_1.mp4';
             },
             nextSource:function(canplayType){
 
@@ -38,10 +47,14 @@
          var videoplayer2=videoPlayer('mod_player2',{
             autoPlay:false,
             muted:true,
-            setSource:function(canplayType){
+            width: '100%',
+            setSource:function(canplayTypes){
                 
-                if(canplayType == 'mp4'){
-                    return 'http://mediaelementjs.com/media/echo-hereweare.mp4'
+                // if(canplayType == 'm3u8'){
+                //     return 'http://play.ergeyy.com/vedios/stream/xiaopingguo.m3u8'
+                // }
+                if (canplayTypes.indexOf('m3u8') >= 0) {
+                    return 'http://play.ergeyy.com/vedios/stream/xiaopingguo.m3u8'
                 }
             },
             success:function(videoElement,node,videoObj){

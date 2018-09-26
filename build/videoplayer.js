@@ -135,24 +135,41 @@
         getCanPlayType: function() {
             var myvideo = document.createElement('video');
             var playMsg, videotype;
+            var canplayTypes = [];
             if (myvideo.canPlayType) {
                 videotype = this.videoType[0];
                 playMsg = myvideo.canPlayType(videotype);
                 if ('' != playMsg) {
-                    return this._slideType(videotype)
+                    // return this._slideType(videotype)
+                    canplayTypes.push(this._slideType(videotype));
                 }
 
                 videotype = this.videoType[1];
                 playMsg = myvideo.canPlayType(videotype);
                 if ('' != playMsg) {
-                    return this._slideType(videotype)
+                    // return this._slideType(videotype)
+                    canplayTypes.push(this._slideType(videotype));
                 }
 
                 videotype = this.videoType[2];
                 playMsg = myvideo.canPlayType(videotype);
                 if ('' != playMsg) {
-                    return this._slideType(videotype)
+                    // return this._slideType(videotype)
+                    canplayTypes.push(this._slideType(videotype));
                 }
+
+                playMsg = myvideo.canPlayType('application/vnd.apple.mpegurl');
+                if ('' != playMsg) {
+                    // return this._slideType(videotype)
+                    canplayTypes.push('m3u8');
+                }
+
+                if (canplayTypes.length > 0) {
+                    return canplayTypes;
+                }
+                return false;
+
+
             } else {
                 return false;
             }
